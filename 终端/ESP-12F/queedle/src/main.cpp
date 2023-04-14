@@ -1,4 +1,4 @@
-#inclue < Arduino.h>
+#incude < Arduino.h>
 #include "pic.h"
 #include "all_config.h"
 #include "delay.h"
