@@ -126,6 +126,11 @@ if __name__ == "__main__" :
     app = QApplication(sys.argv)
 
     window = MainWindow()
+
+    # styleFile = '../QSS/MacOS.qss'
+    # qssStyle = CommonHelper.read_qss(styleFile)
+    # window.setStyleSheet(qssStyle)
+
     window.show()
 
     sys.exit(app.exec_())
