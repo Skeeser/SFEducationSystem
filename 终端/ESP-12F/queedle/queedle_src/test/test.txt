@@ -1,0 +1,46 @@
+// refresh_mode = Full      全屏刷新
+// refresh_mode = Partial   局部刷新
+// void EPD_HW_Init()
+// {
+//   EPD_W21_RST_0; // Module reset
+//   delay(1);      // At least 10ms delay
+//   EPD_W21_RST_1;
+//   delay(1); // At least 10ms delay
+
+//   int refresh_mode = 0;
+//   Epaper_READBUSY();
+//   Epaper_Write_Command(0x12);
+//   Epaper_READBUSY();
+//   Epaper_Write_Command(0x01);
+//   Epaper_Write_Data(0x2B);
+//   Epaper_Write_Data(0x01);
+//   Epaper_Write_Data(0x00);
+//   Epaper_Write_Command(0x11);
+//   Epaper_Write_Data(0x03);
+//   Epaper_Write_Command(0x44);
+//   Epaper_Write_Data(0x00);
+//   Epaper_Write_Data(0x31);
+//   Epaper_Write_Command(0x45);
+//   Epaper_Write_Data(0x00);
+//   Epaper_Write_Data(0x00);
+//   Epaper_Write_Data(0x2B);
+//   Epaper_Write_Data(0x01);
+//   Epaper_Write_Command(0x3C);
+//   Epaper_Write_Data(0x01);
+//   Epaper_Write_Command(0x18);
+//   Epaper_Write_Data(0x80);
+//   Epaper_Write_Command(0x22);
+//   if (refresh_mode == 0)
+//     Epaper_Write_Data(0xB1);
+//   if (refresh_mode == 1)
+//     Epaper_Write_Data(0xB9);
+//   Epaper_Write_Command(0x20);
+//   Epaper_READBUSY();
+//   Epaper_Write_Command(0x4E);
+//   Epaper_Write_Data(0x00);
+//   Epaper_Write_Command(0x4F);
+//   Epaper_Write_Data(0x00);
+//   Epaper_Write_Data(0x00);
+//   Epaper_READBUSY();
+// }
+
