@@ -16,7 +16,7 @@ const int TCPPORT = 8266;
 const char *sendbuff = "this is queedle!";
 
 // wifi开关
-#define IFWIFI 1
+#define IFWIFI 0
 myWifi wifi;
 
 // test
@@ -53,23 +53,25 @@ void loop()
 {
   unsigned char *readbuff = new unsigned char[ALLSCREEN_GRAGHBYTES];
 
-#if IFWIFI
+#if IFWIFI // wifi功能区
   if (!wifi.client.connected())
   {
     wifi.WifiInit(SSID, PASSWORD, HOST, TCPPORT);
   }
-#endif
 
   TcpReadTest(readbuff);
 
-  // if (IfPushTest())
-  // {
-  //   // PaintTest(readbuff);
-  //   EpdDisplay(gImage_BW);
-  //   // void EpdPartialTest();
-  //   EPD_Part_Init();
-  //   EPD_Dis_Part(20, 40, gImage_BW, 100, 100);
-  // }
+#endif
+
+  if (IfPushTest())
+  {
+    Serial.println("\npaint txt.");
+    PaintTest(readbuff);
+    // EpdDisplay(gImage_BW);
+    // void EpdPartialTest();
+    // EPD_Part_Init();
+    // EPD_Dis_Part(20, 40, gImage_BW, 100, 100);
+  }
 
   delete[] readbuff;
 }
@@ -111,10 +113,11 @@ void TcpReadTest(unsigned char *readbuff)
   }
 }
 
+PAINT_TIME sPaint_time;
 // 绘图测试
 void PaintTest(unsigned char *BlackImage)
 {
-  Paint_NewImage(BlackImage, MAX_LINE_BYTES * 8, MAX_COLUMN_BYTES, 0, MIRROR_HORIZONTAL, WHITE);
+  Paint_NewImage(BlackImage, MAX_LINE_BYTES * 8, MAX_COLUMN_BYTES, ROTATE_90, MIRROR_HORIZONTAL, WHITE);
   Paint_SelectImage(BlackImage);
   Paint_Clear(WHITE);
 
@@ -134,12 +137,17 @@ void PaintTest(unsigned char *BlackImage)
   // Paint_DrawString_EN(10, 20, "hello world", &Font12, WHITE, BLACK);
   // Paint_DrawNum(10, 33, 123456789, &Font12, BLACK, WHITE);
   // Paint_DrawNum(10, 50, 987654321, &Font16, WHITE, BLACK);
-  // // Paint_DrawString_CN(130, 0, " 你好abc", &Font12CN, BLACK, WHITE);
-  // // Paint_DrawString_CN(130, 20, "微雪电子", &Font24CN, WHITE, BLACK);
+  // Paint_DrawString_CN(130, 0, " 你好abc", &Font12CN, BLACK, WHITE);
+  // Paint_DrawString_CN(130, 20, "微雪电子", &Font24CN, WHITE, BLACK);
 
-  // Paint_DrawString_EN(10, 20, "This is Queendle!!!114514", &Font24, WHITE, BLACK);
+  Paint_DrawString_EN(10, 20, "This is Queendle!!!114514", &Font24, WHITE, BLACK);
+  // sPaint_time.Hour = 3;
+  // sPaint_time.Min = 23;
+  // sPaint_time.Sec = 34;
+  // Paint_DrawTime(50, 50, &sPaint_time, &Font16, WHITE, BLACK);
+  // Paint_DrawImage(gImage_BW, 10, 10, 60, 40);
 
-  Debug("EPD_Display\r\n");
+  Serial.println("\nEPD_Display");
   EpdDisplay((const unsigned char *)BlackImage);
   delay(1000);
 }
