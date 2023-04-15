@@ -1,3 +1,4 @@
+#if 0
 const unsigned char gImage_BW[15000] PROGMEM = {
     0xff,
     0xff,
@@ -15000,3 +15001,5 @@ const unsigned char gImage_BW[15000] PROGMEM = {
     0xaa,
     0xaa,
 };
+
+#endif

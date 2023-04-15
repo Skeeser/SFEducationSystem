@@ -4,6 +4,45 @@
 #include "all_config.h"
 #include "GUI_Paint.h"
 #include "epd.h"
+#include "single_finger.h"
+#include "two_finger.h"
+#include "three_finger.h"
+void Page_Paint_test(unsigned char *BlackImage)
+{
+    PAINT_TIME sPaint_time;
+    Paint_NewImage(BlackImage, MAX_LINE_BYTES * 8, MAX_COLUMN_BYTES, ROTATE_90, MIRROR_HORIZONTAL, WHITE);
+    Paint_SelectImage(BlackImage);
+    Paint_Clear(WHITE);
+
+    // 2.Drawing on the image 示例
+    Paint_DrawPoint(10, 80, BLACK, DOT_PIXEL_1X1, DOT_STYLE_DFT);
+    Paint_DrawPoint(10, 90, BLACK, DOT_PIXEL_2X2, DOT_STYLE_DFT);
+    Paint_DrawPoint(10, 100, BLACK, DOT_PIXEL_3X3, DOT_STYLE_DFT);
+    Paint_DrawLine(20, 70, 70, 120, BLACK, DOT_PIXEL_1X1, LINE_STYLE_SOLID);
+    Paint_DrawLine(70, 70, 20, 120, BLACK, DOT_PIXEL_1X1, LINE_STYLE_SOLID);
+    Paint_DrawRectangle(20, 70, 70, 120, BLACK, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
+    Paint_DrawRectangle(80, 70, 130, 120, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
+    Paint_DrawCircle(45, 95, 20, BLACK, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
+    Paint_DrawCircle(105, 95, 20, WHITE, DOT_PIXEL_1X1, DRAW_FILL_FULL);
+    Paint_DrawLine(85, 95, 125, 95, BLACK, DOT_PIXEL_1X1, LINE_STYLE_DOTTED);
+    Paint_DrawLine(105, 75, 105, 115, BLACK, DOT_PIXEL_1X1, LINE_STYLE_DOTTED);
+    Paint_DrawString_EN(10, 0, "waveshare", &Font16, BLACK, WHITE);
+    Paint_DrawString_EN(10, 20, "hello world", &Font12, WHITE, BLACK);
+    Paint_DrawNum(10, 33, 123456789, &Font12, BLACK, WHITE);
+    Paint_DrawNum(10, 50, 987654321, &Font16, WHITE, BLACK);
+    // Paint_DrawString_CN(130, 0, " 你好abc", &Font12CN, BLACK, WHITE);
+    // Paint_DrawString_CN(130, 20, "微雪电子", &Font24CN, WHITE, BLACK);
+
+    // Paint_DrawString_EN(10, 20, "This is Queendle!!!114514", &Font24, WHITE, BLACK);
+    sPaint_time.Hour = 3;
+    sPaint_time.Min = 23;
+    sPaint_time.Sec = 34;
+    Paint_DrawTime(200, 300, &sPaint_time, &Font16, WHITE, BLACK);
+
+    Serial.println("\nEPD_Display");
+    EpdDisplay((const unsigned char *)BlackImage);
+    delay(1000);
+}
 
 // 绘画第一页
 void Page_Paint_Menu(unsigned char *BlackImage)
@@ -13,6 +52,34 @@ void Page_Paint_Menu(unsigned char *BlackImage)
     Paint_Clear(WHITE);
 
     // 开始绘制
+
+    Paint_DrawRectangle(1, 1, 300, 400, BLACK, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
+    Paint_DrawRectangle(4, 101, 297, 397, BLACK, DOT_PIXEL_2X2, DRAW_FILL_EMPTY);
+    Paint_DrawRectangle(3, 1, 105, 101, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
+    Paint_DrawRectangle(4, 101, 105, 397, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
+    Paint_DrawRectangle(38, 35, 71, 45, WHITE, DOT_PIXEL_1X1, DRAW_FILL_FULL);
+    Paint_DrawLine(5, 51, 104, 51, WHITE, DOT_PIXEL_1X1, LINE_STYLE_SOLID);
+    Paint_DrawLine(4, 101, 104, 101, WHITE, DOT_PIXEL_2X2, LINE_STYLE_SOLID);
+    Paint_DrawLine(4, 200, 297, 200, BLACK, DOT_PIXEL_1X1, LINE_STYLE_DOTTED);
+    Paint_DrawLine(4, 299, 297, 299, BLACK, DOT_PIXEL_1X1, LINE_STYLE_DOTTED);
+
+    Paint_DrawCircle(25, 18, 15, WHITE, DOT_PIXEL_1X1, DRAW_FILL_FULL);
+    Paint_DrawLine(25, 3, 25, 33, BLACK, DOT_PIXEL_1X1, LINE_STYLE_DOTTED);
+    Paint_DrawLine(10, 18, 40, 18, BLACK, DOT_PIXEL_1X1, LINE_STYLE_DOTTED);
+    Paint_DrawCircle(83, 18, 15, WHITE, DOT_PIXEL_1X1, DRAW_FILL_FULL);
+    Paint_DrawLine(83, 3, 83, 33, BLACK, DOT_PIXEL_1X1, LINE_STYLE_DOTTED);
+    Paint_DrawLine(68, 18, 98, 18, BLACK, DOT_PIXEL_1X1, LINE_STYLE_DOTTED);
+
+    Paint_DrawString_EN(20, 64, "Mode", &Font24, BLACK, WHITE);
+    Paint_DrawCircle(54, 151, 49, WHITE, DOT_PIXEL_1X1, DRAW_FILL_FULL);
+    Paint_DrawString_EN(126, 140, "Daily News", &Font20, WHITE, BLACK);
+    Paint_DrawImage(gImage_single_finger, 20, 119, 68, 68);
+    Paint_DrawCircle(54, 250, 49, WHITE, DOT_PIXEL_1X1, DRAW_FILL_FULL);
+    Paint_DrawString_EN(111, 239, "Click to Read", &Font20, WHITE, BLACK);
+    Paint_DrawImage(gImage_two_fingers, 20, 218, 68, 68);
+    Paint_DrawCircle(54, 349, 49, WHITE, DOT_PIXEL_1X1, DRAW_FILL_FULL);
+    Paint_DrawString_EN(126, 338, "Communicate", &Font20, WHITE, BLACK);
+    Paint_DrawImage(gImage_three_fingers, 20, 317, 68, 68);
 
     Serial.println("\nPage Menu has painted...");
     EpdDisplay((const unsigned char *)BlackImage);

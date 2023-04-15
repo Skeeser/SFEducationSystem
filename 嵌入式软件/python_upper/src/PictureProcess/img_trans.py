@@ -19,10 +19,12 @@ class ImgTransLogic:
         self.brightness = 1
         self.contrast = 1
         self.sharpness = 1
+        # 旋转角度
+        self.rotate_angle = 90
 
         # 图像大小，裁剪前
-        self.PIX_H = 300  # 图像高
-        self.PIX_W = 400  # 图像宽
+        self.PIX_H = 68  # 图像高300
+        self.PIX_W = 68  # 图像宽400
         # 输出格式
         self.MODE = 'W'  # H/W，纵向扫描/横向扫描 todo 先定死之后再拓展
         self.NUM_W = 16  # 每行数据个数
@@ -31,7 +33,7 @@ class ImgTransLogic:
     # 打开图片
     def open_picture(self, img_path: str):
         # 创建大小缩放图片
-        self.my_img = Image.open(img_path).resize((self.PIX_W, self.PIX_H)) # todo 打开后还要对大小进行处理
+        self.my_img = Image.open(img_path).rotate(self.rotate_angle).resize((self.PIX_W, self.PIX_H)) # todo 打开后还要对大小进行处理
         print('img_file:', self.my_img.format, self.my_img.mode, self.my_img.size, self.my_img.palette)
 
     # 抖动算法
@@ -104,12 +106,12 @@ class ImgTransLogic:
                     self.out_list.append(int(self.to_hex(img_array[i][k * 8:k * 8 + 8 if k * 8 + 8 < width else width])))
 
     # 保存编码函数
-    def print_c51(self, out_mode:int):
+    def print_c51(self, save_path, out_mode:int):
         count = 0
         if out_mode == self.OUTESP:
-            filename = 'E:\pio_projects\queedle\include\pic.h' # todo 之后可以自由控制
-            with open(filename, 'w') as file_object:
-                file_object.write("const unsigned char gImage_BW[15000] PROGMEM = { \n")
+            # todo 之后可以自由控制
+            with open(save_path, 'w') as file_object:
+                file_object.write("const unsigned char gImage_three_fingers[618] PROGMEM = { \n")
                 for i in self.out_list:
                     file_object.write('0x{:02x},'.format(i))
                     count += 1
@@ -117,10 +119,10 @@ class ImgTransLogic:
                         file_object.write('\n')
                 file_object.write('};\n')
         elif out_mode == self.OUTUPPER:
-            filename = 'E:\data.txt'
+            filename = 'C:\\Desktop\\data.txt'
             with open(filename, 'w') as file_object:
                 for i in self.out_list:
-                    file_object.write('{:02x}'.format(i))
+                    file_object.write('0x{:02x},'.format(i))
 
     # 解码函数
     def decode_img(self):
@@ -138,7 +140,7 @@ class ImgTransLogic:
                         ck_array[i][(k + 1) * 8 - p - 1] = bmp_list[i * width_t + k] % 2
                         bmp_list[i * width_t + k] /= 2
         ck_img = Image.fromarray(255 * ck_array)
-        ck_img.save('E:\cv_projects\\CkeckBMP.bmp')  # 预览 todo 图像显示在这里之后去掉
+        # ck_img.save('E:\cv_projects\\CkeckBMP.bmp')  # 预览 todo 图像显示在这里之后去掉
         ck_img.show()
 
     # 关闭图像
@@ -147,10 +149,12 @@ class ImgTransLogic:
 
 
 if __name__ == "__main__":
-    IMG_PATH = 'E:\cv_projects\\hutao.jpg'
+    IMG_PATH = 'C:\\Desktop\\hand-three-fingers(1).jpg'
+    SAVE_PATH = 'D:\AllMyProject\ElectricDesign_project\嵌入式国赛\SFEducationSystem\终端\ESP-12F\queedle\include\\three_finger.h'
     imgc = ImgTransLogic()
     imgc.open_picture(IMG_PATH)
     imgc.floyd_steinberg()
     imgc.encode_img()
+    imgc.print_c51(SAVE_PATH, 5)
     imgc.decode_img()
     imgc.close_picture()

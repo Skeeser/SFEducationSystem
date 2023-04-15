@@ -839,9 +839,9 @@ void Paint_DrawTime(UWORD Xstart, UWORD Ystart, PAINT_TIME *pTime, sFONT *Font,
     Paint_DrawChar(Xstart + Dx + Dx / 4 + Dx / 2, Ystart, ':', Font, Color_Background, Color_Foreground);
     Paint_DrawChar(Xstart + Dx * 2 + Dx / 2, Ystart, value[pTime->Min / 10], Font, Color_Background, Color_Foreground);
     Paint_DrawChar(Xstart + Dx * 3 + Dx / 2, Ystart, value[pTime->Min % 10], Font, Color_Background, Color_Foreground);
-    Paint_DrawChar(Xstart + Dx * 4 + Dx / 2 - Dx / 4, Ystart, ':', Font, Color_Background, Color_Foreground);
-    Paint_DrawChar(Xstart + Dx * 5, Ystart, value[pTime->Sec / 10], Font, Color_Background, Color_Foreground);
-    Paint_DrawChar(Xstart + Dx * 6, Ystart, value[pTime->Sec % 10], Font, Color_Background, Color_Foreground);
+    // Paint_DrawChar(Xstart + Dx * 4 + Dx / 2 - Dx / 4, Ystart, ':', Font, Color_Background, Color_Foreground);
+    // Paint_DrawChar(Xstart + Dx * 5, Ystart, value[pTime->Sec / 10], Font, Color_Background, Color_Foreground);
+    // Paint_DrawChar(Xstart + Dx * 6, Ystart, value[pTime->Sec % 10], Font, Color_Background, Color_Foreground);
 }
 
 /******************************************************************************
@@ -882,13 +882,55 @@ void Paint_DrawImage(const unsigned char *image_buffer, UWORD xStart, UWORD ySta
     UWORD w_byte = (W_Image % 8) ? (W_Image / 8) + 1 : W_Image / 8;
     UDOUBLE Addr = 0;
     UDOUBLE pAddr = 0;
+
+    UWORD X, Y;
+    switch (Paint.Rotate)
+    {
+    case 0:
+        X = xStart;
+        Y = yStart;
+        break;
+    case 90:
+        X = Paint.WidthMemory - yStart - 1;
+        Y = xStart;
+        break;
+    case 180:
+        X = Paint.WidthMemory - xStart - 1;
+        Y = Paint.HeightMemory - yStart - 1;
+        break;
+    case 270:
+        X = yStart;
+        Y = Paint.HeightMemory - xStart - 1;
+        break;
+    default:
+        return;
+    }
+
+    switch (Paint.Mirror)
+    {
+    case MIRROR_NONE:
+        break;
+    case MIRROR_HORIZONTAL:
+        X = Paint.WidthMemory - X - 1;
+        break;
+    case MIRROR_VERTICAL:
+        Y = Paint.HeightMemory - Y - 1;
+        break;
+    case MIRROR_ORIGIN:
+        X = Paint.WidthMemory - X - 1;
+        Y = Paint.HeightMemory - Y - 1;
+        break;
+    default:
+        return;
+    }
+
     for (y = 0; y < H_Image; y++)
     {
         for (x = 0; x < w_byte; x++)
         { // 8 pixel =  1 byte
             Addr = x + y * w_byte;
-            pAddr = x + (xStart / 8) + ((y + yStart) * Paint.WidthByte);
-            Paint.Image[pAddr] = (unsigned char)image_buffer[Addr];
+            pAddr = x + (X / 8) + ((y + Y) * Paint.WidthByte);
+            Paint.Image[pAddr] = pgm_read_byte(&image_buffer[Addr]);
         }
     }
 }
