@@ -55,8 +55,9 @@ void myWifi::WifiInit(const char *ssid, const char *password, const char *host, 
     Serial.println(WiFi.localIP().toString());
     Serial.println(mhost.c_str());
 
-    // 连接tcp服务器
-    // 处理未连接到服务器异常
+// 连接tcp服务器
+// 处理未连接到服务器异常
+#if IFTCP
     Serial.println("\nstart connecting to web server....");
     while (!client.connected())
     {
@@ -70,6 +71,7 @@ void myWifi::WifiInit(const char *ssid, const char *password, const char *host, 
         }
     }
     Serial.println("\ntcp connected!");
+#endif
 }
 
 // void myWifi::WifiHttpSetting() //没弄完

@@ -115,6 +115,7 @@ typedef struct
     UBYTE Hour;  // 0 - 23
     UBYTE Min;   // 0 - 59
     UBYTE Sec;   // 0 - 59
+    UBYTE WeekDay;
 } PAINT_TIME;
 extern PAINT_TIME sPaint_time;
 
@@ -140,7 +141,9 @@ void Paint_DrawChar(UWORD Xstart, UWORD Ystart, const char Acsii_Char, sFONT *Fo
 void Paint_DrawString_EN(UWORD Xstart, UWORD Ystart, const char *pString, sFONT *Font, UWORD Color_Foreground, UWORD Color_Background);
 void Paint_DrawString_CN(UWORD Xstart, UWORD Ystart, const char *pString, cFONT *font, UWORD Color_Foreground, UWORD Color_Background);
 void Paint_DrawNum(UWORD Xpoint, UWORD Ypoint, int32_t Nummber, sFONT *Font, UWORD Color_Foreground, UWORD Color_Background);
+void Paint_DrawYearTime(UWORD Xstart, UWORD Ystart, PAINT_TIME *pTime, sFONT *Font, UWORD Color_Foreground, UWORD Color_Background);
 void Paint_DrawTime(UWORD Xstart, UWORD Ystart, PAINT_TIME *pTime, sFONT *Font, UWORD Color_Foreground, UWORD Color_Background);
+void Paint_DrawWeekDay(UWORD Xstart, UWORD Ystart, PAINT_TIME *pTime, sFONT *Font, UWORD Color_Foreground, UWORD Color_Background);
 
 // pic
 void Paint_DrawBitMap(const unsigned char *image_buffer);

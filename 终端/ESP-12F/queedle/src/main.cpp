@@ -52,17 +52,19 @@ void loop()
 {
   unsigned char *readbuff = new unsigned char[ALLSCREEN_GRAGHBYTES];
 
-#if IFWIFI // wifi功能区
+#if IFTCP // wifi功能区
   if (!wifi.client.connected())
   {
     wifi.WifiInit(SSID, PASSWORD, HOST, TCPPORT);
   }
-
   TcpReadTest(readbuff);
+#endif
+#if IFTIME
+
+#else
 
 #endif
-
-  if (IfPushTest())
+  if (IfPushTest()) // Is_Trans_Time()
   {
     Serial.println("\npaint txt.");
     Page_Paint_Menu(readbuff);

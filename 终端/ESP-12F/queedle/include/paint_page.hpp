@@ -1,4 +1,4 @@
-#ifndef __PAINT_PAGE__
+#ifndef _PAINT_PAGE__
 #define __PAINT_PAGE__
 
 #include "all_config.h"
@@ -7,9 +7,42 @@
 #include "single_finger.h"
 #include "two_finger.h"
 #include "three_finger.h"
-void Page_Paint_test(unsigned char *BlackImage)
+#include "time_utils.h"
+
+#define LIMIT_TIME 60000 // 1min
+
+#if IFTIME
+PAINT_TIME sPaint_time;
+TimeClient timeClient;
+TimeData timeData;
+size_t last_time;
+#endif
+
+void Page_Time_Update()
 {
-    PAINT_TIME sPaint_time;
+    timeClient.UpdateTime(timeData);
+    sPaint_time.Hour = timeData.hours;
+    sPaint_time.Min = timeData.minutes;
+    sPaint_time.Sec = timeData.seconds;
+    sPaint_time.Year = timeData.currentYear;
+    sPaint_time.Month = timeData.currentMonth;
+    sPaint_time.Day = timeData.monthDay;
+    sPaint_time.WeekDay = timeData.weekday;
+}
+
+bool Is_Trans_Time()
+{
+    if (millis() - last_time > LIMIT_TIME)
+    {
+        last_time = millis();
+        return true;
+    }
+    return false;
+}
+
+void Page_Paint_Test(unsigned char *BlackImage)
+{
+
     Paint_NewImage(BlackImage, MAX_LINE_BYTES * 8, MAX_COLUMN_BYTES, ROTATE_90, MIRROR_HORIZONTAL, WHITE);
     Paint_SelectImage(BlackImage);
     Paint_Clear(WHITE);
@@ -50,6 +83,11 @@ void Page_Paint_Menu(unsigned char *BlackImage)
     Paint_NewImage(BlackImage, MAX_LINE_BYTES * 8, MAX_COLUMN_BYTES, ROTATE_90, MIRROR_HORIZONTAL, WHITE);
     Paint_SelectImage(BlackImage);
     Paint_Clear(WHITE);
+    Serial.println("\nPage Menu start painting");
+#if IFTIME
+    // 更新时间
+    Page_Time_Update();
+#endif
 
     // 开始绘制
 
@@ -81,7 +119,17 @@ void Page_Paint_Menu(unsigned char *BlackImage)
     Paint_DrawString_EN(126, 338, "Communicate", &Font20, WHITE, BLACK);
     Paint_DrawImage(gImage_three_fingers, 20, 317, 68, 68);
 
-    Serial.println("\nPage Menu has painted...");
+#if IFTIME
+
+    Serial.println("Page Menu start painting year");
+    Paint_DrawYearTime(120, 20, &sPaint_time, &Font20, WHITE, BLACK);
+    Serial.println("Page Menu start painting time");
+    Paint_DrawTime(120, 45, &sPaint_time, &Font20, WHITE, BLACK);
+    Serial.println("Page Menu start painting weekday");
+    Paint_DrawWeekDay(120, 70, &sPaint_time, &Font20, WHITE, BLACK);
+#endif
+
+    Serial.println("Page Menu has painted...");
     EpdDisplay((const unsigned char *)BlackImage);
     delay(1000);
 }

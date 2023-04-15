@@ -1,4 +1,4 @@
-#include "TimeUtils.h"
+#include "time_utils.h"
 
 TimeClient::TimeClient()
 {
@@ -6,19 +6,30 @@ TimeClient::TimeClient()
 	timeClient->begin();
 }
 
-void TimeClient::UpdateTime(TimeData& data)
+void TimeClient::UpdateTime(TimeData &data)
 {
+	Serial.println("\nTime is updating......");
 	if (millis() - t > interval)
 	{
 		timeClient->update();
-
-		data.day = timeClient->getDay();
+		unsigned long epochTime = timeClient->getEpochTime();
+		data.weekday = timeClient->getDay();
 		data.hours = timeClient->getHours();
 		data.minutes = timeClient->getMinutes();
 		data.seconds = timeClient->getSeconds();
 
+		struct tm *ptm = gmtime((time_t *)&epochTime);
+		data.monthDay = ptm->tm_mday;
+		data.currentMonth = ptm->tm_mon + 1;
+		data.currentYear = ptm->tm_year + 1;
+
 		t = millis();
 		last_sec = millis();
+
+		Serial.println(data.currentYear);
+		Serial.println(data.monthDay);
+		Serial.println(data.hours);
+		Serial.println(data.minutes);
 	}
 	else
 	{

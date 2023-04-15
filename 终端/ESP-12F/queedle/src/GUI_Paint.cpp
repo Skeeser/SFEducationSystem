@@ -816,6 +816,22 @@ void Paint_DrawNum(UWORD Xpoint, UWORD Ypoint, int32_t Nummber,
     Paint_DrawString_EN(Xpoint, Ypoint, (const char *)pStr, Font, Color_Background, Color_Foreground);
 }
 
+// 绘画年月日
+void Paint_DrawYearTime(UWORD Xstart, UWORD Ystart, PAINT_TIME *pTime, sFONT *Font,
+                        UWORD Color_Foreground, UWORD Color_Background)
+{
+    uint8_t value[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+    UWORD Dx = Font->Width;
+    // Write data into the cache
+    Paint_DrawNum(Xstart, Ystart, pTime->Year, Font, Color_Foreground, Color_Background);
+    Paint_DrawChar(Xstart + Dx * 3 + Dx / 4 + Dx / 2, Ystart, '/', Font, Color_Background, Color_Foreground);
+    Paint_DrawChar(Xstart + Dx * 4 + Dx / 2, Ystart, value[pTime->Month / 10], Font, Color_Background, Color_Foreground);
+    Paint_DrawChar(Xstart + Dx * 5 + Dx / 2, Ystart, value[pTime->Month % 10], Font, Color_Background, Color_Foreground);
+    Paint_DrawChar(Xstart + Dx * 6 + Dx / 2 - Dx / 4, Ystart, '/', Font, Color_Background, Color_Foreground);
+    Paint_DrawChar(Xstart + Dx * 7, Ystart, value[pTime->Day / 10], Font, Color_Background, Color_Foreground);
+    Paint_DrawChar(Xstart + Dx * 8, Ystart, value[pTime->Day % 10], Font, Color_Background, Color_Foreground);
+}
+
 /******************************************************************************
 function:	Display time
 parameter:
@@ -842,6 +858,14 @@ void Paint_DrawTime(UWORD Xstart, UWORD Ystart, PAINT_TIME *pTime, sFONT *Font,
     // Paint_DrawChar(Xstart + Dx * 4 + Dx / 2 - Dx / 4, Ystart, ':', Font, Color_Background, Color_Foreground);
     // Paint_DrawChar(Xstart + Dx * 5, Ystart, value[pTime->Sec / 10], Font, Color_Background, Color_Foreground);
     // Paint_DrawChar(Xstart + Dx * 6, Ystart, value[pTime->Sec % 10], Font, Color_Background, Color_Foreground);
+}
+
+// 打印星期
+void Paint_DrawWeekDay(UWORD Xstart, UWORD Ystart, PAINT_TIME *pTime,
+                       sFONT *Font, UWORD Color_Foreground, UWORD Color_Background)
+{
+    char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    Paint_DrawString_EN(Xstart, Ystart, daysOfTheWeek[pTime->WeekDay], Font, Color_Foreground, Color_Background);
 }
 
 /******************************************************************************

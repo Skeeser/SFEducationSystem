@@ -42,6 +42,8 @@
 #define ALLSCREEN_GRAGHBYTES 15000
 
 // wifi开关
-#define IFWIFI 0
+#define IFWIFI 1
+#define IFTCP 0
+#define IFTIME 1
 
 #endif
