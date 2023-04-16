@@ -37,6 +37,7 @@ void setup()
   // 初始化串口
   Serial.begin(9600);
   Serial.println("\nqueedle is starting........");
+
 #if IFWIFI
   wifi.WifiInit(SSID, PASSWORD, HOST, TCPPORT);
 #endif
@@ -51,43 +52,40 @@ void setup()
 void loop()
 {
   unsigned char *readbuff = new unsigned char[ALLSCREEN_GRAGHBYTES];
-
 #if IFTCP // wifi功能区
   if (!wifi.client.connected())
   {
     wifi.WifiInit(SSID, PASSWORD, HOST, TCPPORT);
   }
   TcpReadTest(readbuff);
+
 #endif
 #if IFTIME
-
+  if (Is_Trans_Time())
 #else
-
+  if (IfPushTest())
 #endif
-  if (IfPushTest()) // Is_Trans_Time()
   {
     Serial.println("\npaint txt.");
     Page_Paint_Menu(readbuff);
-    // EpdDisplay(gImage_BW);
   }
 
   delete[] readbuff;
+
+  // Page_Paint_Menu(readbuff);
+  // EpdDisplay(gImage_BW);
 }
 
 // 按键测试
+
 bool IfPushTest()
 {
-  static int ButtonState = 0;
-  static int ButtonLastState = 0;
 
-  ButtonState = !digitalRead(16);
-  if (ButtonState != ButtonLastState)
+  if (!digitalRead(0))
   {
-    ButtonLastState = ButtonState;
-    if (ButtonState)
-    {
-      return true;
-    }
+    ESP.wdtFeed();
+    delay(5);
+    return true;
   }
 
   return false;

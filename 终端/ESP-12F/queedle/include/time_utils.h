@@ -23,7 +23,7 @@ public:
 	void UpdateTime(TimeData &data);
 
 private:
-	long t = -600000;
+	long t = -1200000;
 	long last_sec = 0;
 
 	long interval = 1200000; // 20min

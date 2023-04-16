@@ -823,7 +823,7 @@ void Paint_DrawYearTime(UWORD Xstart, UWORD Ystart, PAINT_TIME *pTime, sFONT *Fo
     uint8_t value[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
     UWORD Dx = Font->Width;
     // Write data into the cache
-    Paint_DrawNum(Xstart, Ystart, pTime->Year, Font, Color_Foreground, Color_Background);
+    Paint_DrawNum(Xstart, Ystart, pTime->Year, Font, Color_Background, Color_Foreground);
     Paint_DrawChar(Xstart + Dx * 3 + Dx / 4 + Dx / 2, Ystart, '/', Font, Color_Background, Color_Foreground);
     Paint_DrawChar(Xstart + Dx * 4 + Dx / 2, Ystart, value[pTime->Month / 10], Font, Color_Background, Color_Foreground);
     Paint_DrawChar(Xstart + Dx * 5 + Dx / 2, Ystart, value[pTime->Month % 10], Font, Color_Background, Color_Foreground);

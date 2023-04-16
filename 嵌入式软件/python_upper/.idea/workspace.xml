@@ -2,12 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5ac4c6b9-c010-4fc1-874b-a87c36960add" name="变更" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/include/TimeUtils.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/include/paint_page.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/include/paint_page.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/include/time_utils.h" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/include/time_utils.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/platformio.ini" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/platformio.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/GUI_Paint.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/GUI_Paint.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/TimeUtils.cpp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/time_utils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/time_utils.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

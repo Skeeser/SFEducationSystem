@@ -1,4 +1,4 @@
-#ifndef _PAINT_PAGE__
+#ifndef_PAINT_PAGE__
 #define __PAINT_PAGE__
 
 #include "all_config.h"
@@ -15,7 +15,7 @@
 PAINT_TIME sPaint_time;
 TimeClient timeClient;
 TimeData timeData;
-size_t last_time;
+size_t last_time = -60000;
 #endif
 
 void Page_Time_Update()
@@ -122,9 +122,9 @@ void Page_Paint_Menu(unsigned char *BlackImage)
 #if IFTIME
 
     Serial.println("Page Menu start painting year");
-    Paint_DrawYearTime(120, 20, &sPaint_time, &Font20, WHITE, BLACK);
+    Paint_DrawYearTime(120, 16, &sPaint_time, &Font20, WHITE, BLACK);
     Serial.println("Page Menu start painting time");
-    Paint_DrawTime(120, 45, &sPaint_time, &Font20, WHITE, BLACK);
+    Paint_DrawTime(120, 43, &sPaint_time, &Font24, WHITE, BLACK);
     Serial.println("Page Menu start painting weekday");
     Paint_DrawWeekDay(120, 70, &sPaint_time, &Font20, WHITE, BLACK);
 #endif
