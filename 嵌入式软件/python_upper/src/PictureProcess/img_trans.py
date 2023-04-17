@@ -20,11 +20,11 @@ class ImgTransLogic:
         self.contrast = 1
         self.sharpness = 1
         # 旋转角度
-        self.rotate_angle = 90
+        self.rotate_angle = 0
 
         # 图像大小，裁剪前
-        self.PIX_H = 68  # 图像高300
-        self.PIX_W = 68  # 图像宽400
+        self.PIX_H = 300  # 图像高68
+        self.PIX_W = 400  # 图像宽68
         # 输出格式
         self.MODE = 'W'  # H/W，纵向扫描/横向扫描 todo 先定死之后再拓展
         self.NUM_W = 16  # 每行数据个数
@@ -149,8 +149,8 @@ class ImgTransLogic:
 
 
 if __name__ == "__main__":
-    IMG_PATH = 'C:\\Desktop\\hand-three-fingers(1).jpg'
-    SAVE_PATH = 'D:\AllMyProject\ElectricDesign_project\嵌入式国赛\SFEducationSystem\终端\ESP-12F\queedle\include\\three_finger.h'
+    # IMG_PATH = 'C:\\Desktop\\hand-three-fingers(1).jpg'
+    # SAVE_PATH = 'D:\AllMyProject\ElectricDesign_project\嵌入式国赛\SFEducationSystem\终端\ESP-12F\queedle\include\\three_finger.h'
     imgc = ImgTransLogic()
     imgc.open_picture(IMG_PATH)
     imgc.floyd_steinberg()

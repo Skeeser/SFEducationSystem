@@ -8,6 +8,7 @@
 #include <ESP8266mDNS.h>
 #include "all_config.h"
 #include <WString.h>
+#include <paint_page.h>
 
 class myWifi
 {

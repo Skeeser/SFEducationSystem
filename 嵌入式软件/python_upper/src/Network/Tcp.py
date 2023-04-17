@@ -53,7 +53,7 @@ class TcpLogic:
         # 设置套接字为非阻塞式
         self.tcp_socket.setblocking(False)
         # 绑定地址到套接字
-        self.tcp_socket.bind((ip, port)) # todo 这句代码可能会出问题，排查秦楚
+        self.tcp_socket.bind((ip, port)) # todo 当这句代码出问题时，检查端口是否被占用
         # 开始监听，并限制最大连接数
         self.tcp_socket.listen(5)
         # 创建线程
@@ -104,7 +104,8 @@ class TcpLogic:
         功能函数，用于TCP服务端和TCP客户端发送消息
         """
         try:
-            send_info_encoded = bytes.fromhex(send_info)  # "bytes"发送十六进制可能这里改
+            # send_info_encoded = bytes.fromhex(send_info)  # "bytes"发送十六进制可能这里改
+            send_info_encoded = send_info.encode("utf-8")  # 发送ascii码
             # send_info_encoded = to_hex(send_info) .encode("UTF8")
             # if self.link_flag == self.ServerTCP:
             # 向所有连接的客户端发送消息

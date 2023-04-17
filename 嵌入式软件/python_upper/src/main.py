@@ -42,7 +42,7 @@ class MainWindow(UiWidgetLogic, NetworkLogic, ImgTransLogic):
     def link_signal_handle(self, signal) -> None:
         link_type, my_ip, port = signal
         # if link_type == self.ServerTCP:
-        self.tcp_server_start("", port)
+        self.tcp_server_start(my_ip, port)
 
     # 断开连接槽函数
     def disconnect_signal_handle(self) -> None:

@@ -6,8 +6,8 @@
 #include "epd.h"
 #include "wifi.h"
 #include "GUI_Paint.h"
-#include "part.h"
-#include "paint_page.hpp"
+// #include "part.h"
+#include "paint_page.h"
 
 // 定义wifi用户名和密码
 const char *SSID = "OnePlus 8";     // 要连接的WiFi的名称
@@ -67,7 +67,7 @@ void loop()
 #endif
   {
     Serial.println("\npaint txt.");
-    Page_Paint_Menu(readbuff);
+    // Page_Paint_Menu(readbuff);
   }
 
   delete[] readbuff;
@@ -105,34 +105,35 @@ void TcpReadTest(unsigned char *readbuff)
   if (wifi.WifiTcpRead(readbuff))
   {
     Serial.println("\nstart display");
+
     EpdDisplay((const unsigned char *)readbuff);
   }
 }
 
-void EpdPartialTest()
-{
-  unsigned char fen_L, fen_H, miao_L, miao_H;
-  //////////////////////Partial refresh time demo/////////////////////////////////////
-  EPD_HW_Init(); // Electronic paper initialization
-  // EPD_SetRAMValue_BaseMap(gImage_BW); // Partial refresh background color
-  for (fen_H = 0; fen_H < 6; fen_H++)
-  {
-    for (fen_L = 0; fen_L < 10; fen_L++)
-    {
-      for (miao_H = 0; miao_H < 6; miao_H++)
-      {
-        for (miao_L = 0; miao_L < 10; miao_L++)
-        {
-          EPD_Dis_Part_myself(16, 60, (unsigned char *)pgm_read_byte(&Num[miao_L]),          // x-A,y-A,DATA-A
-                              16, 92, (unsigned char *)pgm_read_byte(&Num[miao_H]),          // x-B,y-B,DATA-B
-                              16, 132, (unsigned char *)pgm_read_byte(gImage_numdot),        // x-C,y-C,DATA-C
-                              16, 174, (unsigned char *)pgm_read_byte(&Num[fen_L]),          // x-D,y-D,DATA-D
-                              16, 206, (unsigned char *)pgm_read_byte(&Num[fen_H]), 32, 64); // x-E,y-E,DATA-E,Resolution 32*64
+// void EpdPartialTest()
+// {
+//   unsigned char fen_L, fen_H, miao_L, miao_H;
+//   //////////////////////Partial refresh time demo/////////////////////////////////////
+//   EPD_HW_Init(); // Electronic paper initialization
+//   // EPD_SetRAMValue_BaseMap(gImage_BW); // Partial refresh background color
+//   for (fen_H = 0; fen_H < 6; fen_H++)
+//   {
+//     for (fen_L = 0; fen_L < 10; fen_L++)
+//     {
+//       for (miao_H = 0; miao_H < 6; miao_H++)
+//       {
+//         for (miao_L = 0; miao_L < 10; miao_L++)
+//         {
+//           EPD_Dis_Part_myself(16, 60, (unsigned char *)pgm_read_byte(&Num[miao_L]),          // x-A,y-A,DATA-A
+//                               16, 92, (unsigned char *)pgm_read_byte(&Num[miao_H]),          // x-B,y-B,DATA-B
+//                               16, 132, (unsigned char *)pgm_read_byte(gImage_numdot),        // x-C,y-C,DATA-C
+//                               16, 174, (unsigned char *)pgm_read_byte(&Num[fen_L]),          // x-D,y-D,DATA-D
+//                               16, 206, (unsigned char *)pgm_read_byte(&Num[fen_H]), 32, 64); // x-E,y-E,DATA-E,Resolution 32*64
 
-          if ((fen_L == 0) && (miao_H == 0) && (miao_L == 9))
-            EpdClean();
-        }
-      }
-    }
-  }
-}
+//           if ((fen_L == 0) && (miao_H == 0) && (miao_L == 9))
+//             EpdClean();
+//         }
+//       }
+//     }
+//   }
+// }

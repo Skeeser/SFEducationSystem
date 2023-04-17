@@ -1,15 +1,7 @@
-#ifndef_PAINT_PAGE__
-#define __PAINT_PAGE__
-
-#include "all_config.h"
-#include "GUI_Paint.h"
-#include "epd.h"
+#include "paint_page.h"
 #include "single_finger.h"
 #include "two_finger.h"
 #include "three_finger.h"
-#include "time_utils.h"
-
-#define LIMIT_TIME 60000 // 1min
 
 #if IFTIME
 PAINT_TIME sPaint_time;
@@ -18,7 +10,7 @@ TimeData timeData;
 size_t last_time = -60000;
 #endif
 
-void Page_Time_Update()
+static void Page_Time_Update()
 {
     timeClient.UpdateTime(timeData);
     sPaint_time.Hour = timeData.hours;
@@ -134,4 +126,17 @@ void Page_Paint_Menu(unsigned char *BlackImage)
     delay(1000);
 }
 
-#endif
+// 绘画新闻
+void Page_Paint_DailyNews(unsigned char *BlackImage, String news_data)
+{
+    Paint_NewImage(BlackImage, MAX_LINE_BYTES * 8, MAX_COLUMN_BYTES, ROTATE_90, MIRROR_HORIZONTAL, WHITE);
+    Paint_SelectImage(BlackImage);
+    Paint_Clear(WHITE);
+    Serial.println("\nPage DailyNews start painting");
+
+    Paint_DrawString_EN(20, 3, news_data.c_str(), &Font8, WHITE, BLACK);
+
+    Serial.println("Page DailyNews has painted...");
+    EpdDisplay((const unsigned char *)BlackImage);
+    delay(1000);
+}

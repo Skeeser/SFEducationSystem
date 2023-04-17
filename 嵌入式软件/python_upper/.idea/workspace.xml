@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5ac4c6b9-c010-4fc1-874b-a87c36960add" name="变更" comment="">
-      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/include/time_utils.h" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/include/time_utils.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/platformio.ini" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/platformio.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/GUI_Paint.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/GUI_Paint.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Network/Tcp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Network/Tcp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PictureProcess/img_trans.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/PictureProcess/img_trans.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/include/all_config.h" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/include/all_config.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/include/paint_page.hpp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/time_utils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/time_utils.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +32,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
   </component>
-  <component name="RunManager" selected="Python.img_trans">
+  <component name="RunManager" selected="Python.main">
     <configuration name="img_trans" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="queedle_pyqt" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -77,8 +79,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.img_trans" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.img_trans" />
       </list>
     </recent_temporary>
   </component>
@@ -93,6 +95,10 @@
       <workItem from="1681456229134" duration="1062000" />
       <workItem from="1681473219701" duration="1730000" />
       <workItem from="1681568864097" duration="2580000" />
+      <workItem from="1681635959757" duration="2870000" />
+      <workItem from="1681659554489" duration="258000" />
+      <workItem from="1681660028714" duration="267000" />
+      <workItem from="1681660531758" duration="2671000" />
     </task>
     <servers />
   </component>
@@ -100,7 +106,7 @@
     <option name="version" value="3" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/python_upper$img_trans.coverage" NAME="img_trans 覆盖结果" MODIFIED="1681570866563" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/PictureProcess" />
-    <SUITE FILE_PATH="coverage/python_upper$main.coverage" NAME="main 覆盖结果" MODIFIED="1681474336359" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/python_upper$img_trans.coverage" NAME="img_trans 覆盖结果" MODIFIED="1681636191149" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/PictureProcess" />
+    <SUITE FILE_PATH="coverage/python_upper$main.coverage" NAME="main 覆盖结果" MODIFIED="1681663101657" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
   </component>
 </project>
