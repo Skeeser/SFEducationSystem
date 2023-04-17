@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1232</width>
-    <height>764</height>
+    <height>784</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
       <enum>QTabWidget::Triangular</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -33,61 +33,6 @@
        <string>图片处理</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout_2">
-       <item row="0" column="1">
-        <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
-          <widget class="GraphicsView" name="ShowImage">
-           <property name="autoFillBackground">
-            <bool>true</bool>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background: rgb(0, 0, 0)</string>
-           </property>
-           <property name="frameShape">
-            <enum>QFrame::Panel</enum>
-           </property>
-           <property name="verticalScrollBarPolicy">
-            <enum>Qt::ScrollBarAlwaysOff</enum>
-           </property>
-           <property name="horizontalScrollBarPolicy">
-            <enum>Qt::ScrollBarAlwaysOff</enum>
-           </property>
-           <property name="backgroundBrush">
-            <brush brushstyle="SolidPattern">
-             <color alpha="0">
-              <red>29</red>
-              <green>29</green>
-              <blue>29</blue>
-             </color>
-            </brush>
-           </property>
-           <property name="foregroundBrush">
-            <brush brushstyle="NoBrush">
-             <color alpha="255">
-              <red>0</red>
-              <green>0</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </property>
-           <property name="interactive">
-            <bool>true</bool>
-           </property>
-           <property name="sceneRect">
-            <rectf>
-             <x>0.000000000000000</x>
-             <y>0.000000000000000</y>
-             <width>0.000000000000000</width>
-             <height>0.000000000000000</height>
-            </rectf>
-           </property>
-           <property name="cacheMode">
-            <set>QGraphicsView::CacheNone</set>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
        <item row="0" column="0">
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
@@ -383,6 +328,61 @@
             </size>
            </property>
           </spacer>
+         </item>
+        </layout>
+       </item>
+       <item row="0" column="1">
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="GraphicsView" name="ShowImage">
+           <property name="autoFillBackground">
+            <bool>true</bool>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background: rgb(0, 0, 0)</string>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Panel</enum>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="backgroundBrush">
+            <brush brushstyle="SolidPattern">
+             <color alpha="0">
+              <red>29</red>
+              <green>29</green>
+              <blue>29</blue>
+             </color>
+            </brush>
+           </property>
+           <property name="foregroundBrush">
+            <brush brushstyle="NoBrush">
+             <color alpha="255">
+              <red>0</red>
+              <green>0</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </property>
+           <property name="interactive">
+            <bool>true</bool>
+           </property>
+           <property name="sceneRect">
+            <rectf>
+             <x>0.000000000000000</x>
+             <y>0.000000000000000</y>
+             <width>0.000000000000000</width>
+             <height>0.000000000000000</height>
+            </rectf>
+           </property>
+           <property name="cacheMode">
+            <set>QGraphicsView::CacheNone</set>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -1081,7 +1081,7 @@
             <string>连接网络</string>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="resources.qrc">
              <normaloff>:/img/Icons/broken_link_72px.ico</normaloff>
              <normalon>:/img/Icons/link_72px.ico</normalon>:/img/Icons/broken_link_72px.ico</iconset>
            </property>

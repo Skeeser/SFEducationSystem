@@ -106,7 +106,7 @@ void TcpReadTest(unsigned char *readbuff)
   {
     Serial.println("\nstart display");
 
-    EpdDisplay((const unsigned char *)readbuff);
+    // EpdDisplay((const unsigned char *)readbuff);
   }
 }
 

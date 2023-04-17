@@ -2,13 +2,97 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5ac4c6b9-c010-4fc1-874b-a87c36960add" name="变更" comment="">
+      <change afterPath="$PROJECT_DIR$/../SFEducation/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/QSS/MacOS.qss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/QSS/QPushButton.qss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/QSS/QSS-master/QSS-master/AMOLED.qss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/QSS/QSS-master/QSS-master/Aqua.qss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/QSS/QSS-master/QSS-master/ConsoleStyle.qss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/QSS/QSS-master/QSS-master/ElegantDark.qss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/QSS/QSS-master/QSS-master/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/QSS/QSS-master/QSS-master/MacOS.qss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/QSS/QSS-master/QSS-master/ManjaroMix.qss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/QSS/QSS-master/QSS-master/MaterialDark.qss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/QSS/QSS-master/QSS-master/NeonButtons.qss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/QSS/QSS-master/QSS-master/QSS_IMG/go-down-symbolic.symbolic.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/QSS/QSS-master/QSS-master/QSS_IMG/go-next-symbolic.symbolic.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/QSS/QSS-master/QSS-master/QSS_IMG/go-previous-symbolic.symbolic.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/QSS/QSS-master/QSS-master/QSS_IMG/go-up-symbolic.symbolic.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/QSS/QSS-master/QSS-master/QSS_IMG/object-select-symbolic.symbolic.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/QSS/QSS-master/QSS-master/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/QSS/QSS-master/QSS-master/Ubuntu.qss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/QSS/QScrollBar.qss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/42.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/Saria Wears.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/aili.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/amiya.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/chengshan.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/chengshan2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/ganyv1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/hutao.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/ling.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/linglan.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/linglan2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/linlan3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/qinliu.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/wendi.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/xi.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/xi2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/夏-100440006-0.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210453.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210457.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210502.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210519.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210522.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210526.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210529.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210533.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210537.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210548.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210553.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210600.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210607.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210610.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210613.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210618.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210625.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210630.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210637.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210646.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210657.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210701.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210705.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210710.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210733.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210741.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210750.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210759.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210807.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210815.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210822.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210833.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20220921210840.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20221009093708.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20221009093722.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20221009093726.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20221009093730.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20221009093733.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20221009093737.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20221009093741.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20221009093746.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/picture/微信图片_20221009093752.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/src/Tools/CommonHelper.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/src/UiLogic.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SFEducation/src/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Network/Tcp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Network/Tcp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PictureProcess/img_trans.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/PictureProcess/img_trans.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/include/all_config.h" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/include/all_config.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/include/paint_page.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/UI/queedle.ui" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI/queedle.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/paint_page.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/paint_page.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,14 +183,28 @@
       <workItem from="1681659554489" duration="258000" />
       <workItem from="1681660028714" duration="267000" />
       <workItem from="1681660531758" duration="2671000" />
+      <workItem from="1681704823462" duration="1253000" />
+      <workItem from="1681721403563" duration="2980000" />
+      <workItem from="1681726574063" duration="595000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/python_upper$img_trans.coverage" NAME="img_trans 覆盖结果" MODIFIED="1681636191149" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/PictureProcess" />
-    <SUITE FILE_PATH="coverage/python_upper$main.coverage" NAME="main 覆盖结果" MODIFIED="1681663101657" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/python_upper$main.coverage" NAME="main 覆盖结果" MODIFIED="1681704888837" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
   </component>
 </project>

@@ -134,7 +134,7 @@ void Page_Paint_DailyNews(unsigned char *BlackImage, String news_data)
     Paint_Clear(WHITE);
     Serial.println("\nPage DailyNews start painting");
 
-    Paint_DrawString_EN(20, 3, news_data.c_str(), &Font8, WHITE, BLACK);
+    Paint_DrawString_EN(2, 10, news_data.c_str(), &Font16, WHITE, BLACK);
 
     Serial.println("Page DailyNews has painted...");
     EpdDisplay((const unsigned char *)BlackImage);
