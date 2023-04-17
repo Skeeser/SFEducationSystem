@@ -147,6 +147,6 @@ void Paint_DrawWeekDay(UWORD Xstart, UWORD Ystart, PAINT_TIME *pTime, sFONT *Fon
 
 // pic
 void Paint_DrawBitMap(const unsigned char *image_buffer);
-void Paint_DrawImage(const unsigned char *image_buffer, UWORD xStart, UWORD yStart, UWORD W_Image, UWORD H_Image);
+void Paint_DrawImage(const unsigned char *image_buffer, UWORD xStart, UWORD yStart, UWORD W_Image, UWORD H_Image, UBYTE Thrink);
 
 #endif

@@ -94,7 +94,7 @@ void Paint_SetMirroring(UBYTE mirror)
 
 void Paint_SetScale(UBYTE scale)
 {
-    if (scale == 2)
+    if (scale == 2) // 默认
     {
         Paint.Scale = scale;
         Paint.WidthByte = (Paint.WidthMemory % 8 == 0) ? (Paint.WidthMemory / 8) : (Paint.WidthMemory / 8 + 1);
@@ -900,7 +900,7 @@ parameter:
     xEnd             ：Image width
     yEnd             : Image height
 ******************************************************************************/
-void Paint_DrawImage(const unsigned char *image_buffer, UWORD xStart, UWORD yStart, UWORD W_Image, UWORD H_Image)
+void Paint_DrawImage(const unsigned char *image_buffer, UWORD xStart, UWORD yStart, UWORD W_Image, UWORD H_Image, UBYTE Thrink)
 {
     UWORD x, y;
     UWORD w_byte = (W_Image % 8) ? (W_Image / 8) + 1 : W_Image / 8;
@@ -948,12 +948,13 @@ void Paint_DrawImage(const unsigned char *image_buffer, UWORD xStart, UWORD ySta
         return;
     }
 
+    auto wb = (Paint.WidthByte % Thrink == 0) ? (Paint.WidthByte / Thrink) : (Paint.WidthByte / Thrink + 1);
     for (y = 0; y < H_Image; y++)
     {
         for (x = 0; x < w_byte; x++)
         { // 8 pixel =  1 byte
             Addr = x + y * w_byte;
-            pAddr = x + (X / 8) + ((y + Y) * Paint.WidthByte);
+            pAddr = x / Thrink + (X / 8) + y * wb + Y * Paint.WidthByte;
             Paint.Image[pAddr] = pgm_read_byte(&image_buffer[Addr]);
         }
     }

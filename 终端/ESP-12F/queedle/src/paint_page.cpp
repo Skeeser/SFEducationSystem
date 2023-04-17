@@ -82,7 +82,6 @@ void Page_Paint_Menu(unsigned char *BlackImage)
 #endif
 
     // 开始绘制
-
     Paint_DrawRectangle(1, 1, 300, 400, BLACK, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
     Paint_DrawRectangle(4, 101, 297, 397, BLACK, DOT_PIXEL_2X2, DRAW_FILL_EMPTY);
     Paint_DrawRectangle(3, 1, 105, 101, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
@@ -103,13 +102,13 @@ void Page_Paint_Menu(unsigned char *BlackImage)
     Paint_DrawString_EN(20, 64, "Mode", &Font24, BLACK, WHITE);
     Paint_DrawCircle(54, 151, 49, WHITE, DOT_PIXEL_1X1, DRAW_FILL_FULL);
     Paint_DrawString_EN(126, 140, "Daily News", &Font20, WHITE, BLACK);
-    Paint_DrawImage(gImage_single_finger, 20, 119, 68, 68);
+    Paint_DrawImage(gImage_single_finger, 20, 119, 68, 68, 2);
     Paint_DrawCircle(54, 250, 49, WHITE, DOT_PIXEL_1X1, DRAW_FILL_FULL);
     Paint_DrawString_EN(111, 239, "Click to Read", &Font20, WHITE, BLACK);
-    Paint_DrawImage(gImage_two_fingers, 20, 218, 68, 68);
+    Paint_DrawImage(gImage_two_fingers, 20, 218, 68, 68, 1);
     Paint_DrawCircle(54, 349, 49, WHITE, DOT_PIXEL_1X1, DRAW_FILL_FULL);
     Paint_DrawString_EN(126, 338, "Communicate", &Font20, WHITE, BLACK);
-    Paint_DrawImage(gImage_three_fingers, 20, 317, 68, 68);
+    Paint_DrawImage(gImage_three_fingers, 20, 317, 68, 68, 1);
 
 #if IFTIME
 
