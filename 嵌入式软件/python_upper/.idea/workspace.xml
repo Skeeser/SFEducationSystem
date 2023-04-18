@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5ac4c6b9-c010-4fc1-874b-a87c36960add" name="变更" comment="">
-      <change afterPath="$PROJECT_DIR$/../SFEducation/src/Network/StopThreading.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SFEducation/src/Network/Tcp.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SFEducation/src/Network/net_init.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SFEducation/src/NewsGet/NewsGet.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SFEducation/src/PictureProcess/cutpicture.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SFEducation/src/PictureProcess/graphics.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SFEducation/src/PictureProcess/img_trans.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SFEducation/src/PictureProcess/mygraphics.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/paint_page.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/paint_page.cpp" afterDir="false" />
-    </list>
+    <list default="true" id="5ac4c6b9-c010-4fc1-874b-a87c36960add" name="变更" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -105,7 +93,7 @@
       <workItem from="1681660531758" duration="2671000" />
       <workItem from="1681704823462" duration="1253000" />
       <workItem from="1681721403563" duration="2980000" />
-      <workItem from="1681726574063" duration="3271000" />
+      <workItem from="1681726574063" duration="3272000" />
     </task>
     <servers />
   </component>

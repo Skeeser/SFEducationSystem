@@ -67,7 +67,8 @@ void loop()
 #endif
   {
     Serial.println("\npaint txt.");
-    Page_Paint_Menu(readbuff);
+    // Page_Paint_Menu(readbuff);
+    Page_Paint_DailyNews(readbuff, "ssda");
   }
 
   delete[] readbuff;

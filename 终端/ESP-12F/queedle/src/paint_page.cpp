@@ -102,7 +102,7 @@ void Page_Paint_Menu(unsigned char *BlackImage)
     Paint_DrawString_EN(20, 64, "Mode", &Font24, BLACK, WHITE);
     Paint_DrawCircle(54, 151, 49, WHITE, DOT_PIXEL_1X1, DRAW_FILL_FULL);
     Paint_DrawString_EN(126, 140, "Daily News", &Font20, WHITE, BLACK);
-    Paint_DrawImage(gImage_single_finger, 20, 119, 68, 68, 2);
+    Paint_DrawImage(gImage_single_finger, 20, 119, 68, 68, 1);
     Paint_DrawCircle(54, 250, 49, WHITE, DOT_PIXEL_1X1, DRAW_FILL_FULL);
     Paint_DrawString_EN(111, 239, "Click to Read", &Font20, WHITE, BLACK);
     Paint_DrawImage(gImage_two_fingers, 20, 218, 68, 68, 1);
@@ -133,7 +133,21 @@ void Page_Paint_DailyNews(unsigned char *BlackImage, String news_data)
     Paint_Clear(WHITE);
     Serial.println("\nPage DailyNews start painting");
 
-    Paint_DrawString_EN(2, 10, news_data.c_str(), &Font16, WHITE, BLACK);
+    Paint_DrawRectangle(1, 1, 300, 35, BLACK, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
+    Paint_DrawRectangle(1, 1, 100, 35, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
+    Paint_DrawString_EN(20, 5, "News", &Font24, BLACK, WHITE);
+    Paint_DrawRectangle(105, 1, 141, 35, BLACK, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
+    Paint_DrawRectangle(141, 1, 200, 35, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
+    Paint_DrawImage(gImage_single_finger, 106, 1, 68, 68, 2);
+    Paint_DrawString_EN(143, 7, "Next", &Font20, BLACK, WHITE);
+    Paint_DrawRectangle(205, 1, 241, 35, BLACK, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
+    Paint_DrawRectangle(241, 1, 300, 35, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
+    Paint_DrawImage(gImage_two_fingers, 206, 1, 68, 68, 2);
+    Paint_DrawString_EN(243, 7, "Back", &Font20, BLACK, WHITE);
+    Paint_DrawLine(1, 37, 300, 37, BLACK, DOT_PIXEL_1X1, LINE_STYLE_DOTTED);
+    Paint_DrawLine(1, 398, 300, 398, BLACK, DOT_PIXEL_1X1, LINE_STYLE_DOTTED);
+    Paint_DrawLine(1, 400, 300, 400, BLACK, DOT_PIXEL_1X1, LINE_STYLE_DOTTED);
+    // Paint_DrawString_EN(2, 10, news_data.c_str(), &Font16, WHITE, BLACK);
 
     Serial.println("Page DailyNews has painted...");
     EpdDisplay((const unsigned char *)BlackImage);
