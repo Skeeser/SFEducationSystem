@@ -1,4 +1,4 @@
-#include "UI_Paint.h"
+#include "GUI_Paint.h"
 #include "Debug.h"
 #include <stdint.h>
 #include <stdlib.h>
@@ -954,12 +954,12 @@ void Paint_DrawImage(const unsigned char *image_buffer, UWORD xStart, UWORD ySta
         for (x = 0; x < w_byte; x++)
         { // 8 pixel =  1 byte
             Addr = x + y * w_byte;
-            if (x < (w_byte / Thrink))
+            if (!(y % 2))
             {
-
                 pAddr = x / Thrink + (X / 8) + y * wb + Y * Paint.WidthByte;
-                Paint.Image[pAddr] = pgm_read_byte(&image_buffer[Addr]);
             }
+
+            Paint.Image[pAddr] = pgm_read_byte(&image_buffer[Addr]);
         }
     }
 }
