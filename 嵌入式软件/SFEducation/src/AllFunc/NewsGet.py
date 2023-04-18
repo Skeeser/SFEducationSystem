@@ -22,8 +22,6 @@ class NewsGet:
             ret_news_str += i.text
             if flag == 5:
                 break
-
-
             # print(i)
         return ret_news_str
 

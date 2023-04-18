@@ -9,99 +9,10 @@ import math
 import pyttsx3
 from cnocr import CnOcr
 
-"""图像预处理部分"""
-class Process:
-    def __init__(self):
-        self.image = None
-
-    def resize(self, image, width=None, height=None, inter=cv2.INTER_AREA):
-        dim = None
-        (h, w) = image.shape[:2]
-        if width is None and height is None:
-            return image
-        if width is None:
-            r = height / float(h)
-            dim = (int(w * r), height)
-        else:
-            r = width / float(w)
-            dim = (width, int(h * r))
-        resized = cv2.resize(image, dim, interpolation=inter)
-        return resized
-
-    # 图像旋转
-    def rotate(self, image, angle, center=None, scale=1.0):
-        (w, h) = image.shape[0:2]
-        if center is None:
-            center = (w // 2, h // 2)
-        wrapMat = cv2.getRotationMatrix2D(center, angle, scale)
-        return cv2.warpAffine(image, wrapMat, (h, w))
-
-    def showAndWaitKey(self, winName, img):
-        cv2.imshow(winName, img)
-        cv2.waitKey(0)
-
-    # 主函数
-    def getCorrect2(self, src):
-        # 读取图片，灰度化
-        self.image = src
-        # 坐标也会相同变化
-        ratio = self.image.shape[0] / 500.0
-        orig = self.image.copy()
-        self.image = self.resize(orig, height=1000)
-
-        gray = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
-
-        # 腐蚀、膨胀
-        kernel = np.ones((5, 5), np.uint8)
-        erode_Img = cv2.erode(gray, kernel)
-        eroDil = cv2.dilate(erode_Img, kernel)
-        # 边缘检测
-        canny = cv2.Canny(eroDil, 50, 150)
-        # 霍夫变换得到线条
-        lines = cv2.HoughLinesP(canny, 0.8, np.pi / 180, 90, minLineLength=100, maxLineGap=10)
-        drawing = np.zeros(src.shape[:], dtype=np.uint8)
-        # 画出线条
-        for line in lines:
-            x1, y1, x2, y2 = line[0]
-            cv2.line(drawing, (x1, y1), (x2, y2), (0, 255, 0), 1, lineType=cv2.LINE_AA)
-
-        """
-        计算角度,因为x轴向右，y轴向下，所有计算的斜率是常规下斜率的相反数，我们就用这个斜率（旋转角度）进行旋转
-        """
-        k = float(y1 - y2) / (x1 - x2)
-        thera = np.degrees(math.atan(k))
-        print(thera)
-
-        """
-        旋转角度大于0，则逆时针旋转，否则顺时针旋转
-        """
-        rotateImg = self.rotate(src, thera)
-        warped = cv2.cvtColor(rotateImg, cv2.COLOR_BGR2GRAY)
-        ref = cv2.threshold(warped, 150, 255, cv2.THRESH_BINARY)[1]
-        return ref
-
-
 """OCR部分"""
 class OcrClass:
     def __init__(self):
         self.ocr = CnOcr(det_model_name='en_PP-OCRv3_det', rec_model_name='en_PP-OCRv3')
-       
-    # def tsrocrprocess(self, image):
-    #     preprocess = "thresh"  # thresh
-    #
-    #     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    #     if preprocess == "thresh":
-    #         gray = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-    #     if preprocess == "blur":
-    #         gray = cv2.medianBlur(gray, 3)
-    #
-    #     # filename = "{}.png".format(os.getpid())
-    #     # cv2.imwrite("./ocr/" + filename, image)
-    #     print("start ocr.......")
-    #     text = pytesseract.image_to_string(Image.fromarray(gray))
-    #     print(text)
-    #     return image, text
-    #     # os.remove("./ocr/" + filename)
         
     def ppocrprocess(self, image):
         print("start ocr.......")
@@ -109,7 +20,6 @@ class OcrClass:
         ret = ''
         for line in out:
             ret += line.get('text') + '\n'
-        
         print(ret)
         return image, ret
 
