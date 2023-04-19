@@ -27,7 +27,7 @@ class UiWidgetLogic(QWidget):
     frame_num_signal = pyqtSignal(int)
     hand_mode_signal = pyqtSignal(str)
     construct_signal = pyqtSignal(str)
-    show_message_signal = pyqtSignal(str)
+    show_message_signal = pyqtSignal(str, bool)
 
     # 定义状态
     NoLink = -1
@@ -51,22 +51,23 @@ class UiWidgetLogic(QWidget):
         # 信号与槽
         self.show_message_signal.connect(self.show_message_handle)
         self.now_page_signal.connect(self.now_page_handle)
+        self.frame_num_signal.connect(self.frame_num_handle)
+        self.hand_mode_signal.connect(self.hand_mode_handle)
+        self.construct_signal.connect(self.construct_handle)
 
-        # 系统一启动就执行
-        # 连接网络
-        self.net_link_handle()
+
 
 
     def show_message_handle(self, text, if_endl):
         if if_endl:
             text += '\n'
-        self.myui.MessageShow.setPlainText(text)
+        self.myui.MessageShow.appendPlainText(text)
 
     # 连接函数
     def net_link_handle(self):
         # 只写TCP服务端
         self.show_message_signal.emit("TCP服务端", False)
-        self.show_message_signal.emit("连接的ip为=>" + self.my_ip + ' 端口为=>' + self.PORT, True)
+        self.show_message_signal.emit("连接的ip为=>" + self.my_ip + ' 端口为=>' + str(self.PORT), True)
         self.link_signal.emit((self.ServerTcp, self.my_ip, self.PORT))  # 注意是以元组形式发送，包含连接类型，本地ip，本机/目标端口
         self.link_flag = self.ServerTcp
 
@@ -79,7 +80,6 @@ class UiWidgetLogic(QWidget):
     # 发送函数 todo 可能没用， 可以删掉
     def send_link_handle(self):
         if self.link_flag != self.NoLink:
-            # 循环还是非循环发送
             send_msg = self.myui.SendPlainTextEdit.toPlainText()
             self.send_signal.emit(send_msg)
 
@@ -101,8 +101,10 @@ class UiWidgetLogic(QWidget):
         pix_img = QImage(img_array, img_array.shape[1], img_array.shape[0], img_array.shape[1] * 3,
                                QImage.Format_RGB888)
         pixmap = QPixmap.fromImage(pix_img)
-        self.scene.addItem(QGraphicsPixmapItem.setPixmap(pixmap))
+        # pixitem = QGraphicsPixmapItem()
+        # self.scene.addItem(pixitem.setPixmap(pixmap))
         self.myui.ShowImage_.setScene(self.scene)
+        self.scene.addPixmap(pixmap)
 
 
 if __name__ == "__main__":

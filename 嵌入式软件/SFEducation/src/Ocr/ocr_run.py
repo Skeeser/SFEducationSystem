@@ -262,6 +262,12 @@ class FingerOcr2Voice:
             handedness_list = [handedness[1].classification[0].label, handedness[0].classification[0].label]
         return handedness_list
 
+    # 识别手势（一，二，三）
+    def reg_hand_mode(self):
+        pass
+
+
+
     def recognize(self):
         drawInfo = DrawInFrame()
         fpsTime = time.time()
@@ -272,6 +278,7 @@ class FingerOcr2Voice:
         fps = cap.get(cv2.CAP_PROP_FPS)
         fps = 18
 
+        # 这里开始用mp
         with self.mp_hands.Hands(min_detection_confidence=0.7,
                                  min_tracking_confidence=0.5,
                                  max_num_hands=2) as hands:

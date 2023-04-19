@@ -99,7 +99,7 @@ class TcpLogic:
         pass
 
     # tcp发送
-    def tcp_send(self, send_info: str) -> None:
+    def tcp_send(self, send_info: str) -> str:
         """
         功能函数，用于TCP服务端和TCP客户端发送消息
         """
@@ -112,9 +112,9 @@ class TcpLogic:
             for client,address in self.client_socket_list:
                 client.send(send_info_encoded)
                 # client.send(b'\xfb\xfa\x01\x01DC\x00\x01\x32\x34')
-                print("TCP服务端已发送")
+                return "TCP服务端已发送"
         except Exception as ret:
-            print("发送失败")
+            return "发送失败"
 
     # tcp关闭
     def tcp_close(self) -> None:
