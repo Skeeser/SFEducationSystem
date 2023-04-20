@@ -9,8 +9,8 @@ DEVICE_NUM = 0
 class HandReg:
     def __init__(self):
         # 是否镜像
-        self.if_filp = True
-
+        self.if_filp = False
+        self.result = None
         # 接入USB摄像头时，注意修改cap设备的编号
         self.cap = cv.VideoCapture(DEVICE_NUM)
         # 加载手部检测函数
@@ -44,6 +44,9 @@ class HandReg:
             result = 1
         return result
 
+    def get_result(self):
+        return self.result
+
     # 检测手势
     def detect_hands_gesture(self, result):
         if (result[0] == 0) and (result[1] == 1) and (result[2] == 0) and (result[3] == 0) and (result[4] == 0):
@@ -64,21 +67,21 @@ class HandReg:
             self.close_hand_reg()
 
         if self.if_filp:
-            self.image = cv.flip(self.image, 0)
-            self.image = cv.flip(self.image, 1)
+            self.frame = cv.flip(self.frame, 0)
+            self.frame = cv.flip(self.frame, 1)
 
         # mediaPipe的图像要求是RGB，所以此处需要转换图像的格式
         frame_RGB = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
-        result = self.hands.process(frame_RGB)
+        self.result = self.hands.process(frame_RGB)
         # 读取视频图像的高和宽
         frame_height = frame.shape[0]
         frame_width = frame.shape[1]
 
         # print(result.multi_hand_landmarks)
         # 如果检测到手
-        if result.multi_hand_landmarks:
+        if self.result.multi_hand_landmarks:
             # 为每个手绘制关键点和连接线
-            for i, handLms in enumerate(result.multi_hand_landmarks):
+            for i, handLms in enumerate(self.result.multi_hand_landmarks):
                 self.mpDraw.draw_landmarks(frame,
                                       handLms,
                                       self.mpHands.HAND_CONNECTIONS,

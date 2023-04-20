@@ -19,7 +19,7 @@ class NewsGet:
         for i in self.new_info:
             flag += 1
             # 获取的html内容是字节，将其转化为字符串
-            ret_news_str += i.text
+            ret_news_str += i.text + '\n'
             if flag == 5:
                 break
             # print(i)

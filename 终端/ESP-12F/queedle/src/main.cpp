@@ -18,6 +18,7 @@ const char *sendbuff = "this is queedle!";
 
 // 全局变量定义
 myWifi wifi;
+String news_buff[5];
 
 // test
 bool IfPushTest();
@@ -52,8 +53,11 @@ void setup()
 
 void loop()
 {
-  static String now_page = "";
+  static String now_page = "Menu";
+  static String last_page = "";
   static String construct = "";
+  static String last_construct = "";
+  static int news_flag = 0;
 
   unsigned char *readbuff = new unsigned char[ALLSCREEN_GRAGHBYTES];
 #if IFTCP // wifi功能区
@@ -71,10 +75,46 @@ void loop()
   {
     Serial.println("receive head!!");
     int index_now_page = receive_data.indexOf(" ", index_head + 1);
-    now_page = receive_data.substring(index_head + 1, index_now_page - index_head - 1);
-    Serial.print(now_page);
-    construct = receive_data.substring(index_now_page + 1, receive_data.length() - index_now_page - 1);
-    Serial.print(construct);
+    now_page = receive_data.substring(index_head + 1, index_now_page);
+    construct = receive_data.substring(index_now_page + 1, receive_data.length());
+
+    if (now_page == "Menu")
+    {
+      if (now_page != last_page)
+      {
+        last_page = now_page;
+        Page_Paint_Menu(readbuff);
+      }
+    }
+    else if (now_page == "News")
+    {
+      if (now_page != last_page)
+      {
+        last_page = now_page;
+        int i = 0;
+        while (i != 5)
+        {
+          auto temp_new = wifi.WifiTcpRead();
+          if (temp_new != "")
+          {
+            news_buff[i] = temp_new;
+            i++;
+          }
+        }
+      }
+
+      if (last_construct != construct)
+      {
+        last_construct = construct;
+        if (construct == "Next" || news_flag == 0)
+        {
+          news_flag++;
+          if (news_flag == 5)
+            news_flag = 0;
+          Page_Paint_DailyNews(readbuff, news_buff[news_flag]);
+        }
+      }
+    }
   }
 
 #endif

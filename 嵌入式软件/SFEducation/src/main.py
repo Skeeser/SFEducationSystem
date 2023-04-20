@@ -19,7 +19,7 @@ class MainWindow(UiWidgetLogic, NetworkLogic):
         self.now_page = 'Menu'
         self.construct = 'Enter'
         self.num_count = [0, "None"]
-        self.last_page = 'none'
+        self.last_page = 'Menu'
         self.last_construct = 'none'
         self.last_time = time.time()
         self.frame = None
@@ -38,6 +38,7 @@ class MainWindow(UiWidgetLogic, NetworkLogic):
         self.hand_reg = HandReg()
         self.news_get = NewsGet()
         self.ocr = FingerOcr2Voice()
+        self.send_signal.emit('head ' + self.now_page + ' ' + self.construct + '\n')
 
     def start(self):
         self.timer.start(10)
@@ -57,9 +58,9 @@ class MainWindow(UiWidgetLogic, NetworkLogic):
         return_msg = self.tcp_send(msg)
         self.show_message_signal.emit(return_msg, True)
         if return_msg == "发送失败":
-            time.sleep(0.5)
+            # time.sleep(0.5)
             # 重试
-            self.show_message_signal.emit("重新发送", True)
+            self.show_message_signal.emit("重新发送", False)
             self.send_signal_handle(msg)
 
     def closeEvent(self, event) -> None:
@@ -86,17 +87,22 @@ class MainWindow(UiWidgetLogic, NetworkLogic):
                     self.now_page = "Ocr"
                 elif hand_num == "three":
                     self.now_page = "Chat"
+
             elif self.now_page == "News":
+                self.last_construct = self.construct
                 self.construct = "Enter"
                 if hand_num == "one":
                     self.construct = "Next"
                 elif hand_num == "two":
                     self.construct = "Back"
                     self.now_page = "Menu"
+                elif self.last_construct == "Next" and hand_num == "none":
+                    self.send_signal.emit('head ' + self.now_page + ' ' + "wait" + '\n')
+
             elif self.now_page == "Ocr":
                 self.construct = "Enter"
                 if hand_num == "one":
-                    self.construct = "Next"
+                    self.construct = "Retry"
                 elif hand_num == "two":
                     self.construct = "Back"
                     self.now_page = "Menu"
@@ -107,14 +113,13 @@ class MainWindow(UiWidgetLogic, NetworkLogic):
                 elif hand_num == "two":
                     self.construct = "Back"
                     self.now_page = "Menu"
+            if hand_num != "none":
+                self.send_signal.emit('head ' + self.now_page + ' ' + self.construct + '\n')
 
             self.now_page_signal.emit(self.now_page)
             self.construct_signal.emit(self.construct)
 
     def action_judge(self):
-        if self.last_construct != self.construct:
-            self.last_construct = self.construct
-            self.send_signal.emit('head ' + self.last_page + ' ' + self.construct + '\n')
 
         if self.last_page != self.now_page:
             self.last_page = self.now_page
@@ -124,7 +129,7 @@ class MainWindow(UiWidgetLogic, NetworkLogic):
                 self.send_signal.emit(news + '\n')
             elif self.now_page == "Ocr":
                 # ocr处理
-                self.frame, text = self.ocr.recognize(self.frame)
+                self.frame, text = self.ocr.recognize(self.frame, self.hand_reg.get_result())
                 self.send_signal.emit(text + '\n')
         else:
             if self.now_page == "Ocr" and self.construct == "Retry":
@@ -144,7 +149,7 @@ class MainWindow(UiWidgetLogic, NetworkLogic):
             self.now_page_signal_handle(hand_num)
             self.hand_mode_signal.emit(hand_num)
 
-        self.action_judge(self.frame)
+        self.action_judge()
         self.show_video_signal_handle(self.frame)
 
 
