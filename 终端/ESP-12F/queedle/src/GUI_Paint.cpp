@@ -954,7 +954,11 @@ void Paint_DrawImage(const unsigned char *image_buffer, UWORD xStart, UWORD ySta
         for (x = 0; x < w_byte; x++)
         { // 8 pixel =  1 byte
             Addr = x + y * w_byte;
-            if (!(y % 2))
+            if (Thrink == 1)
+            {
+                pAddr = x / Thrink + (X / 8) + y * wb + Y * Paint.WidthByte;
+            }
+            else if (!(y % 2))
             {
                 pAddr = x / Thrink + (X / 8) + y * wb + Y * Paint.WidthByte;
             }

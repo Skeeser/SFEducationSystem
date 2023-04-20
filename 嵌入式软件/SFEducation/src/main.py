@@ -37,7 +37,6 @@ class MainWindow(UiWidgetLogic, NetworkLogic):
         self.start()
         self.hand_reg = HandReg()
         self.news_get = NewsGet()
-        self.ocr = FingerOcr2Voice()
         self.send_signal.emit('head ' + self.now_page + ' ' + self.construct + '\n')
 
     def start(self):
@@ -129,11 +128,11 @@ class MainWindow(UiWidgetLogic, NetworkLogic):
                 self.send_signal.emit(news + '\n')
             elif self.now_page == "Ocr":
                 # ocr处理
-                self.frame, text = self.ocr.recognize(self.frame, self.hand_reg.get_result())
+                self.frame, text = self.hand_reg.recognize()
                 self.send_signal.emit(text + '\n')
         else:
             if self.now_page == "Ocr" and self.construct == "Retry":
-                self.frame, text = self.ocr.recognize(self.frame)
+                self.frame, text = self.hand_reg.recognize()
                 self.send_signal.emit(text + '\n')
 
     def while_func(self):
