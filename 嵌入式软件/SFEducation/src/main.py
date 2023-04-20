@@ -9,6 +9,7 @@ from src.Network.net_init import NetworkLogic
 from src.Ocr.hand_reg import HandReg
 from src.Tools.CommonHelper import CommonHelper
 from src.UiLogic import UiWidgetLogic
+from src.Ocr.ocr_run import FingerOcr2Voice
 # 打包指令 auto-py-to-exe
 
 
@@ -21,6 +22,7 @@ class MainWindow(UiWidgetLogic, NetworkLogic):
         self.last_page = 'none'
         self.last_construct = 'none'
         self.last_time = time.time()
+        self.frame = None
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.while_func)
@@ -35,6 +37,7 @@ class MainWindow(UiWidgetLogic, NetworkLogic):
         self.start()
         self.hand_reg = HandReg()
         self.news_get = NewsGet()
+        self.ocr = FingerOcr2Voice()
 
     def start(self):
         self.timer.start(10)
@@ -111,18 +114,26 @@ class MainWindow(UiWidgetLogic, NetworkLogic):
     def action_judge(self):
         if self.last_construct != self.construct:
             self.last_construct = self.construct
-            self.send_signal.emit('head ' + self.last_page + ' ' + self.construct)
+            self.send_signal.emit('head ' + self.last_page + ' ' + self.construct + '\n')
 
         if self.last_page != self.now_page:
             self.last_page = self.now_page
             if self.now_page == "News":
                 # 发送新闻
                 news = self.news_get.getNewsStr()
-                self.send_signal.emit(news)
+                self.send_signal.emit(news + '\n')
+            elif self.now_page == "Ocr":
+                # ocr处理
+                self.frame, text = self.ocr.recognize(self.frame)
+                self.send_signal.emit(text + '\n')
+        else:
+            if self.now_page == "Ocr" and self.construct == "Retry":
+                self.frame, text = self.ocr.recognize(self.frame)
+                self.send_signal.emit(text + '\n')
 
     def while_func(self):
-        frame, hand_num = self.hand_reg.detect()
-        self.show_video_signal_handle(frame)
+        self.frame, hand_num = self.hand_reg.detect()
+
         if self.num_count[1] == hand_num:
             self.num_count[0] += 1
         else:
@@ -133,8 +144,8 @@ class MainWindow(UiWidgetLogic, NetworkLogic):
             self.now_page_signal_handle(hand_num)
             self.hand_mode_signal.emit(hand_num)
 
-        self.action_judge()
-
+        self.action_judge(self.frame)
+        self.show_video_signal_handle(self.frame)
 
 
 

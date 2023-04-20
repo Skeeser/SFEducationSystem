@@ -18,6 +18,7 @@ public:
     // void WifiHttpSetting();
     void WifiTcpSend(const char *sendbuff);
     bool WifiTcpRead(unsigned char *readbuff);
+    String WifiTcpRead();
 
     WiFiClient client; // tcpclient实例
 private:

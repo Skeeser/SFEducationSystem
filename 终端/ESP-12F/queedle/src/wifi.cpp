@@ -122,35 +122,46 @@ void myWifi::WifiInit(const char *ssid, const char *password, const char *host, 
 //     Serial.println("HTTP server started");
 // }
 
+// 透传图片数据
 bool myWifi::WifiTcpRead(unsigned char *readbuff)
 {
     // 透传数据
     if (client.available())
     {
-        // for (int count = 0; count < ALLSCREEN_GRAGHBYTES; count++)
-        // {
-        //     ESP.wdtFeed();
-        //     auto read_ch = client.read();
-        //     if (read_ch != -1)
-        //         readbuff[count] = read_ch;
+        for (int count = 0; count < ALLSCREEN_GRAGHBYTES; count++)
+        {
+            ESP.wdtFeed();
+            auto read_ch = client.read();
+            if (read_ch != -1)
+                readbuff[count] = read_ch;
 
-        //     if (count % 20 == 0) // 数据经过测试100合适 500出问题了
-        //     {
-        //         delay(1); // 必须延时一毫秒接收，要不接受不完全
-        //     }
+            if (count % 20 == 0) // 数据经过测试100合适 500出问题了
+            {
+                delay(1); // 必须延时一毫秒接收，要不接受不完全
+            }
 
-        //     Serial.print(readbuff[count]);
-        //     //   client.read(readbuff, ALLSCREEN_GRAGHBYTES / 10);
-        // }
+            Serial.print(readbuff[count]);
+            //   client.read(readbuff, ALLSCREEN_GRAGHBYTES / 10);
+        }
+
+        return true;
+    }
+    return false;
+}
+
+// 透传字符串数据
+String myWifi::WifiTcpRead()
+{
+    if (client.available())
+    {
         // 接收字符串
         String data = client.readStringUntil('\n');
         Serial.print("read data is =>");
         Serial.print(data);
         Serial.println("");
-        Page_Paint_DailyNews(readbuff, data);
-        return true;
+        return data;
     }
-    return false;
+    return "";
 }
 
 void myWifi::WifiTcpSend(const char *sendbuff)

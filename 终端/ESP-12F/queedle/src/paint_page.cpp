@@ -8,7 +8,6 @@ PAINT_TIME sPaint_time;
 TimeClient timeClient;
 TimeData timeData;
 size_t last_time = -60000;
-#endif
 
 static void Page_Time_Update()
 {
@@ -31,6 +30,8 @@ bool Is_Trans_Time()
     }
     return false;
 }
+
+#endif
 
 void Page_Paint_Test(unsigned char *BlackImage)
 {

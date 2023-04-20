@@ -16,6 +16,7 @@ const char *HOST = "192.168.140.132";
 const int TCPPORT = 8266;
 const char *sendbuff = "this is queedle!";
 
+// 全局变量定义
 myWifi wifi;
 
 // test
@@ -51,13 +52,30 @@ void setup()
 
 void loop()
 {
+  static String now_page = "";
+  static String construct = "";
+
   unsigned char *readbuff = new unsigned char[ALLSCREEN_GRAGHBYTES];
 #if IFTCP // wifi功能区
   if (!wifi.client.connected())
   {
     wifi.WifiInit(SSID, PASSWORD, HOST, TCPPORT);
   }
-  TcpReadTest(readbuff);
+  // TcpReadTest(readbuff);
+  // 接收数据
+  String receive_data = wifi.WifiTcpRead();
+  // 数据分割
+  int index_head = receive_data.indexOf(" ");
+
+  if (receive_data.substring(0, index_head) == "head")
+  {
+    Serial.println("receive head!!");
+    int index_now_page = receive_data.indexOf(" ", index_head + 1);
+    now_page = receive_data.substring(index_head + 1, index_now_page - index_head - 1);
+    Serial.print(now_page);
+    construct = receive_data.substring(index_now_page + 1, receive_data.length() - index_now_page - 1);
+    Serial.print(construct);
+  }
 
 #endif
 #if IFTIME
@@ -68,13 +86,10 @@ void loop()
   {
     Serial.println("\npaint txt.");
     // Page_Paint_Menu(readbuff);
-    Page_Paint_DailyNews(readbuff, "ssda");
+    // Page_Paint_DailyNews(readbuff, "ssda");
   }
 
   delete[] readbuff;
-
-  // Page_Paint_Menu(readbuff);
-  // EpdDisplay(gImage_BW);
 }
 
 // 按键测试
@@ -106,7 +121,6 @@ void TcpReadTest(unsigned char *readbuff)
   if (wifi.WifiTcpRead(readbuff))
   {
     Serial.println("\nstart display");
-
     // EpdDisplay((const unsigned char *)readbuff);
   }
 }

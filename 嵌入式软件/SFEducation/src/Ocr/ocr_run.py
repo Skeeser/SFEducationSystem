@@ -70,6 +70,7 @@ class DrawInFrame:
         # 上次检测结果
         # finger_num 2: OCR
         self.last_detect_res = {'detection': None, 'ocr': '无'}
+        self.ocr_text = ''
 
     def frameaddtext(self, img, text, position, textColor=(0, 255, 0), textSize=30):
         if (isinstance(img, np.ndarray)):  # 判断是否OpenCV图片类型
@@ -120,7 +121,7 @@ class DrawInFrame:
             '{label_zh} {label_en}'.format(label_zh=self.last_detect_res['detection'][0],
                                            label_en=self.last_detect_res['detection'][1]), x, y, w, h, frame)
         # OCR todo 根据手指数量判断
-        ocr_text = ''
+
         if self.last_detect_res['ocr'] == '无':
             # todo 实现画图ocr的相关函数
             src_im, text_list = self.pp_ocr.ppocrprocess(raw_img)
@@ -133,16 +134,16 @@ class DrawInFrame:
                 self.last_detect_res['ocr'] = '无'
         else:
             # 连着上次检测结果
-            ocr_text = self.last_detect_res['ocr']
+            self.ocr_text = self.last_detect_res['ocr']
 
         frame[0:thumb_img_h, (frame_width - thumb_img_w):frame_width, :] = thumb_img
 
         # 是否需要显示
-        if ocr_text != '' and ocr_text != '无':
+        if self.ocr_text != '' and self.ocr_text != '无':
             line_text_num = 15
-            line_num = math.ceil(len(ocr_text) / line_text_num)
+            line_num = math.ceil(len(self.ocr_text) / line_text_num)
             y, h = (y + h + 20), (32 * line_num)
-            frame[y:y + h, x:x + w] = self.generateocrarea(ocr_text, line_text_num, line_num, x, y, w, h, frame)
+            frame[y:y + h, x:x + w] = self.generateocrarea(self.ocr_text, line_text_num, line_num, x, y, w, h, frame)
         self.last_thumb_img = thumb_img
         return frame
 
@@ -237,7 +238,7 @@ class DrawInFrame:
 
         self.last_finger_x[handedness] = finger_cord[0]
         self.last_finger_y[handedness] = finger_cord[1]
-        return frame
+        return frame, self.ocr_text
 
 
 class FingerOcr2Voice:
@@ -247,13 +248,14 @@ class FingerOcr2Voice:
         self.camera_num = 0
         self.resize_w = 960
         self.resize_h = 720
-        # 是否镜像
-        self.if_filp = True
+
 
         self.mp_drawing = mp.solutions.drawing_utils
         self.mp_drawing_styles = mp.solutions.drawing_styles
         self.mp_hands = mp.solutions.hands
         self.image = None
+
+        self.drawInfo = DrawInFrame()
 
     def checkHandsIndex(self, handedness):
         if len(handedness) == 1:
@@ -262,164 +264,118 @@ class FingerOcr2Voice:
             handedness_list = [handedness[1].classification[0].label, handedness[0].classification[0].label]
         return handedness_list
 
-    # 识别手势（一，二，三）
-    def reg_hand_mode(self):
-        pass
+    def recognize(self, frame, results):
+        self.image = cv2.resize(self.image, (self.resize_w, self.resize_h))
 
+        # todo 需要根据镜头位置来调整,动态调整文本角度， 注意要隔一段时间调用
+        # self.image = cv2.rotate( self.image, cv2.ROTATE_180)
 
+        # 保存缩略图
+        if isinstance(self.drawInfo.last_thumb_img, np.ndarray):
+            self.image = self.drawInfo.generateThumb(self.drawInfo.last_thumb_img, self.image)
 
-    def recognize(self):
-        drawInfo = DrawInFrame()
-        fpsTime = time.time()
+        hand_num = 0
+        # 判断是否有手掌
+        if results.multi_hand_landmarks:
 
-        cap = cv2.VideoCapture(self.camera_num)
+            # 记录左右手index
+            handedness_list = self.checkHandsIndex(results.multi_handedness)
+            hand_num = len(handedness_list)
 
+            self.drawInfo.hand_num = hand_num
 
-        fps = cap.get(cv2.CAP_PROP_FPS)
-        fps = 18
+            # 复制一份干净的原始frame
+            frame_copy = self.image.copy()
+            # 遍历每个手掌
+            for hand_index, hand_landmarks in enumerate(results.multi_hand_landmarks):
+                # 容错
+                if hand_index > 1:
+                    hand_index = 1
 
-        # 这里开始用mp
-        with self.mp_hands.Hands(min_detection_confidence=0.7,
-                                 min_tracking_confidence=0.5,
-                                 max_num_hands=2) as hands:
-            while cap.isOpened():
-                success, self.image = cap.read()
-                self.image = cv2.resize(self.image, (self.resize_w, self.resize_h))
+                # 解析手指，存入各个手指坐标
+                landmark_list = []
 
-                # todo 需要根据镜头位置来调整,动态调整文本角度， 注意要隔一段时间调用
-                # self.image = cv2.rotate( self.image, cv2.ROTATE_180)
+                # 用来存储手掌范围的矩形坐标
+                paw_x_list = []
+                paw_y_list = []
+                for landmark_id, finger_axis in enumerate(
+                        hand_landmarks.landmark):
+                    landmark_list.append([
+                        landmark_id, finger_axis.x, finger_axis.y,
+                        finger_axis.z
+                    ])
+                    paw_x_list.append(finger_axis.x)
+                    paw_y_list.append(finger_axis.y)
+                if landmark_list:
+                    # 比例缩放到像素
+                    ratio_x_to_pixel = lambda x: math.ceil(x * self.resize_w)
+                    ratio_y_to_pixel = lambda y: math.ceil(y * self.resize_h)
 
-                if not success:
-                    print("空帧.")
-                    continue
+                    # 设计手掌左上角、右下角坐标
+                    paw_left_top_x, paw_right_bottom_x = map(ratio_x_to_pixel,
+                                                             [min(paw_x_list), max(paw_x_list)])
+                    paw_left_top_y, paw_right_bottom_y = map(ratio_y_to_pixel,
+                                                             [min(paw_y_list), max(paw_y_list)])
 
-                self.image.flags.writeable = False
-                self.image = cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
+                    # 获取食指指尖坐标
+                    index_finger_tip = landmark_list[8]
+                    index_finger_tip_x = ratio_x_to_pixel(index_finger_tip[1])
+                    index_finger_tip_y = ratio_y_to_pixel(index_finger_tip[2])
 
-                if self.if_filp:
-                 self.image = cv2.flip(self.image, 0)
-                 self.image = cv2.flip(self.image, 1)
-                 
+                    # 获取中指指尖坐标
+                    middle_finger_tip = landmark_list[12]
+                    middle_finger_tip_x = ratio_x_to_pixel(middle_finger_tip[1])
+                    middle_finger_tip_y = ratio_y_to_pixel(middle_finger_tip[2])
 
-                # mediapipe模型处理
-                results = hands.process(self.image)
+                    # 画x,y,z坐标
+                    label_height = 30
+                    label_wdith = 130
+                    cv2.rectangle(self.image, (paw_left_top_x - 30, paw_left_top_y - label_height - 30),
+                                  (paw_left_top_x + label_wdith, paw_left_top_y - 30), (0, 139, 247), -1)
 
-                self.image.flags.writeable = True
-                self.image = cv2.cvtColor(self.image, cv2.COLOR_RGB2BGR)
+                    l_r_hand_text = handedness_list[hand_index][:1]
 
-                # 保存缩略图
-                if isinstance(drawInfo.last_thumb_img, np.ndarray):
-                    self.image = drawInfo.generateThumb(drawInfo.last_thumb_img, self.image)
+                    cv2.putText(self.image,
+                                "{hand} x:{x} y:{y}".format(hand=l_r_hand_text, x=index_finger_tip_x,
+                                                            y=index_finger_tip_y),
+                                (paw_left_top_x - 30 + 10, paw_left_top_y - 40),
+                                cv2.FONT_HERSHEY_PLAIN, 1, (255, 255, 255), 2)
 
-                hand_num = 0
-                # 判断是否有手掌
-                if results.multi_hand_landmarks:
+                    # 给手掌画框框
+                    cv2.rectangle(self.image, (paw_left_top_x - 30, paw_left_top_y - 30),
+                                  (paw_right_bottom_x + 30, paw_right_bottom_y + 30), (0, 139, 247), 1)
 
-                    # 记录左右手index
-                    handedness_list = self.checkHandsIndex(results.multi_handedness)
-                    hand_num = len(handedness_list)
+                    # 释放单手模式
+                    line_len = math.hypot((index_finger_tip_x - middle_finger_tip_x),
+                                          (index_finger_tip_y - middle_finger_tip_y))
 
-                    drawInfo.hand_num = hand_num
+                    if line_len < 50 and handedness_list[hand_index] == 'Right':
+                        self.drawInfo.clearSingleMode()
+                        self.drawInfo.last_thumb_img = None
 
-                    # 复制一份干净的原始frame
-                    frame_copy = self.image.copy()
-                    # 遍历每个手掌
-                    for hand_index, hand_landmarks in enumerate(results.multi_hand_landmarks):
-                        # 容错
-                        if hand_index > 1:
-                            hand_index = 1
-
-                        # 在画面标注手指
-                        self.mp_drawing.draw_landmarks(
-                            self.image,
-                            hand_landmarks,
-                            self.mp_hands.HAND_CONNECTIONS,
-                            self.mp_drawing_styles.get_default_hand_landmarks_style(),
-                            self.mp_drawing_styles.get_default_hand_connections_style())
-
-                        # 解析手指，存入各个手指坐标
-                        landmark_list = []
-
-                        # 用来存储手掌范围的矩形坐标
-                        paw_x_list = []
-                        paw_y_list = []
-                        for landmark_id, finger_axis in enumerate(
-                                hand_landmarks.landmark):
-                            landmark_list.append([
-                                landmark_id, finger_axis.x, finger_axis.y,
-                                finger_axis.z
-                            ])
-                            paw_x_list.append(finger_axis.x)
-                            paw_y_list.append(finger_axis.y)
-                        if landmark_list:
-                            # 比例缩放到像素
-                            ratio_x_to_pixel = lambda x: math.ceil(x * self.resize_w)
-                            ratio_y_to_pixel = lambda y: math.ceil(y * self.resize_h)
-
-                            # 设计手掌左上角、右下角坐标
-                            paw_left_top_x, paw_right_bottom_x = map(ratio_x_to_pixel,
-                                                                     [min(paw_x_list), max(paw_x_list)])
-                            paw_left_top_y, paw_right_bottom_y = map(ratio_y_to_pixel,
-                                                                     [min(paw_y_list), max(paw_y_list)])
-
-                            # 获取食指指尖坐标
-                            index_finger_tip = landmark_list[8]
-                            index_finger_tip_x = ratio_x_to_pixel(index_finger_tip[1])
-                            index_finger_tip_y = ratio_y_to_pixel(index_finger_tip[2])
-
-                            # 获取中指指尖坐标
-                            middle_finger_tip = landmark_list[12]
-                            middle_finger_tip_x = ratio_x_to_pixel(middle_finger_tip[1])
-                            middle_finger_tip_y = ratio_y_to_pixel(middle_finger_tip[2])
-
-                            # 画x,y,z坐标
-                            label_height = 30
-                            label_wdith = 130
-                            cv2.rectangle(self.image, (paw_left_top_x - 30, paw_left_top_y - label_height - 30),
-                                          (paw_left_top_x + label_wdith, paw_left_top_y - 30), (0, 139, 247), -1)
-
-                            l_r_hand_text = handedness_list[hand_index][:1]
-
-                            cv2.putText(self.image,
-                                        "{hand} x:{x} y:{y}".format(hand=l_r_hand_text, x=index_finger_tip_x,
-                                                                    y=index_finger_tip_y),
-                                        (paw_left_top_x - 30 + 10, paw_left_top_y - 40),
-                                        cv2.FONT_HERSHEY_PLAIN, 1, (255, 255, 255), 2)
-
-                            # 给手掌画框框
-                            cv2.rectangle(self.image, (paw_left_top_x - 30, paw_left_top_y - 30),
-                                          (paw_right_bottom_x + 30, paw_right_bottom_y + 30), (0, 139, 247), 1)
-
-                            # 释放单手模式
-                            line_len = math.hypot((index_finger_tip_x - middle_finger_tip_x),
-                                                  (index_finger_tip_y - middle_finger_tip_y))
-
-                            if line_len < 50 and handedness_list[hand_index] == 'Right':
-                                drawInfo.clearSingleMode()
-                                drawInfo.last_thumb_img = None
-
-                                # 传给画图类，如果食指指尖停留超过指定时间（如0.3秒），则启动画图，左右手单独画
-                            self.image = drawInfo.checkIndexFingerMove(handedness_list[hand_index],
-                                                                       [index_finger_tip_x, index_finger_tip_y],
-                                                                       self.image, frame_copy)
+                        # 传给画图类，如果食指指尖停留超过指定时间（如0.3秒），则启动画图，左右手单独画
+                    self.image, text = self.drawInfo.checkIndexFingerMove(handedness_list[hand_index],
+                                                               [index_finger_tip_x, index_finger_tip_y],
+                                                               self.image, frame_copy)
 
                 # 显示刷新率FPS
-                cTime = time.time()
-                fps_text = 1 / (cTime - fpsTime)
-                fpsTime = cTime
-                self.image = drawInfo.frameaddtext(self.image, "帧率: " + str(int(fps_text)), (10, 30),
-                                                        textColor=(0, 155, 20), textSize=25)
-                self.image = drawInfo.frameaddtext(self.image, "手掌: " + str(hand_num), (10, 60),
-                                                        textColor=(0, 55, 250), textSize=25)
-                self.image = drawInfo.frameaddtext(self.image, "模式: " + str(drawInfo.hand_mode), (10, 90),
-                                                        textColor=(156, 155, 50), textSize=25)
+                # cTime = time.time()
+                # fps_text = 1 / (cTime - fpsTime)
+                # fpsTime = cTime
+                # self.image = drawInfo.frameaddtext(self.image, "帧率: " + str(int(fps_text)), (10, 30),
+                #                                         textColor=(0, 155, 20), textSize=25)
+                # self.image = drawInfo.frameaddtext(self.image, "手掌: " + str(hand_num), (10, 60),
+                #                                         textColor=(0, 55, 250), textSize=25)
+                # self.image = drawInfo.frameaddtext(self.image, "模式: " + str(drawInfo.hand_mode), (10, 90),
+                #                                         textColor=(156, 155, 50), textSize=25)
 
                 # 显示画面
                 # self.image = cv2.resize(self.image, (resize_w//2, resize_h//2))
-                cv2.imshow('virtual reader', self.image)
-                if cv2.waitKey(5) & 0xFF == 27:
-                    break
-            cap.release()
+                # cv2.imshow('virtual reader', self.image)
+                # if cv2.waitKey(5) & 0xFF == 27:
+                #     break
+
+            return self.image, text
 
 
 if __name__ == "__main__":

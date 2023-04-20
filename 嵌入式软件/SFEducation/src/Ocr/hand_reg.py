@@ -8,11 +8,16 @@ DEVICE_NUM = 0
 
 class HandReg:
     def __init__(self):
+        # 是否镜像
+        self.if_filp = True
+
         # 接入USB摄像头时，注意修改cap设备的编号
         self.cap = cv.VideoCapture(DEVICE_NUM)
         # 加载手部检测函数
         self.mpHands = mp.solutions.hands
-        self.hands = self.mpHands.Hands()
+        self.hands = self.mpHands.Hands(min_detection_confidence=0.7,
+                                 min_tracking_confidence=0.5,
+                                 max_num_hands=2)
         # 加载绘制函数，并设置手部关键点和连接线的形状、颜色
         self.mpDraw = mp.solutions.drawing_utils
 
@@ -57,6 +62,10 @@ class HandReg:
         if not ret:
             print("Can not receive frame (stream end?). Exiting...")
             self.close_hand_reg()
+
+        if self.if_filp:
+            self.image = cv.flip(self.image, 0)
+            self.image = cv.flip(self.image, 1)
 
         # mediaPipe的图像要求是RGB，所以此处需要转换图像的格式
         frame_RGB = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
