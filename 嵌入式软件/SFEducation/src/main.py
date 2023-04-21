@@ -13,9 +13,10 @@ from src.Ocr.ocr_run import FingerOcr2Voice
 # 打包指令 auto-py-to-exe
 
 
-class MainWindow(UiWidgetLogic, NetworkLogic):
+class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
     def __init__(self, parent=None):
         super().__init__(parent)
+        HandReg.__init__(self)
         self.now_page = 'Menu'
         self.construct = 'Enter'
         self.num_count = [0, "None"]
@@ -35,7 +36,7 @@ class MainWindow(UiWidgetLogic, NetworkLogic):
         # 连接网络
         self.net_link_handle()
         self.start()
-        self.hand_reg = HandReg()
+        # self.hand_reg = HandReg()
         self.news_get = NewsGet()
         self.send_signal.emit('head ' + self.now_page + ' ' + self.construct + '\n')
 
@@ -53,9 +54,9 @@ class MainWindow(UiWidgetLogic, NetworkLogic):
 
     # 发送数据槽函数
     def send_signal_handle(self, msg: str) -> None:
-        self.show_message_signal.emit("尝试发送=> " + msg, True)
+        self.show_message_signal.emit("尝试发送=> " + msg, False)
         return_msg = self.tcp_send(msg)
-        self.show_message_signal.emit(return_msg, True)
+        self.show_message_signal.emit(return_msg, False)
         if return_msg == "发送失败":
             # time.sleep(0.5)
             # 重试
@@ -124,19 +125,24 @@ class MainWindow(UiWidgetLogic, NetworkLogic):
             self.last_page = self.now_page
             if self.now_page == "News":
                 # 发送新闻
+                self.show_message_signal.emit("获取新闻中。。。", False)
                 news = self.news_get.getNewsStr()
                 self.send_signal.emit(news + '\n')
-            elif self.now_page == "Ocr":
-                # ocr处理
-                self.frame, text = self.hand_reg.recognize()
-                self.send_signal.emit(text + '\n')
         else:
-            if self.now_page == "Ocr" and self.construct == "Retry":
-                self.frame, text = self.hand_reg.recognize()
-                self.send_signal.emit(text + '\n')
+            if self.now_page == "Ocr":
+                # ocr处理
+                text = self.recognize()
+                print(text)
+                if text != "" and text is not None:
+                    self.send_signal.emit(text + '\n')
+                else:
+                    self.show_message_signal.emit("未识别到，正在重试", False)
+                # if self.construct == "Retry":
+                #     self.frame, text = self.hand_reg.recognize()
+                #     self.send_signal.emit(text + '\n')
 
     def while_func(self):
-        self.frame, hand_num = self.hand_reg.detect()
+        hand_num = self.detect()
 
         if self.num_count[1] == hand_num:
             self.num_count[0] += 1
@@ -149,7 +155,8 @@ class MainWindow(UiWidgetLogic, NetworkLogic):
             self.hand_mode_signal.emit(hand_num)
 
         self.action_judge()
-        self.show_video_signal_handle(self.frame)
+        if self.frame is not None:
+            self.show_video_signal_handle(self.frame)
 
 
 

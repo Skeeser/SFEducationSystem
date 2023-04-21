@@ -3,9 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="5ac4c6b9-c010-4fc1-874b-a87c36960add" name="变更" comment="">
       <change beforePath="$PROJECT_DIR$/../SFEducation/src/Ocr/hand_reg.py" beforeDir="false" afterPath="$PROJECT_DIR$/../SFEducation/src/Ocr/hand_reg.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SFEducation/src/Ocr/ocr_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/../SFEducation/src/Ocr/ocr_run.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SFEducation/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../SFEducation/src/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/GUI_Paint.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/GUI_Paint.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/paint_page.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/paint_page.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,6 +103,7 @@
       <workItem from="1681827074552" duration="7442000" />
       <workItem from="1681873113765" duration="3525000" />
       <workItem from="1681951877911" duration="1003000" />
+      <workItem from="1682060640117" duration="1225000" />
     </task>
     <servers />
   </component>

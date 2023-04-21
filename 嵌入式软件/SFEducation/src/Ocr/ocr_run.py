@@ -19,7 +19,7 @@ class OcrClass:
         out = self.ocr.ocr(image)
         ret = ''
         for line in out:
-            ret += line.get('text') + '\n'
+            ret += line.get('text')
         print(ret)
         return image, ret
 
@@ -94,7 +94,7 @@ class DrawInFrame:
         sub_img = frame[y:y + h, x:x + w]
         green_rect = np.ones(sub_img.shape, dtype=np.uint8) * 0
         res = cv2.addWeighted(sub_img, 0.5, green_rect, 0.5, 1.0)
-        res = self.frameaddtext(res, text, (10, 10), textColor=(255, 255, 255), textSize=30)
+        # res = self.frameaddtext(res, text, (10, 10), textColor=(255, 255, 255), textSize=30)
         return res
 
     # 生成缩略图
@@ -117,33 +117,34 @@ class DrawInFrame:
         x, y, w, h = (frame_width - thumb_img_w), thumb_img_h, thumb_img_w, 50
 
         frame = frame.copy()
-        frame[y:y + h, x:x + w] = self.generatelabelarea(
-            '{label_zh} {label_en}'.format(label_zh=self.last_detect_res['detection'][0],
-                                           label_en=self.last_detect_res['detection'][1]), x, y, w, h, frame)
-        # OCR todo 根据手指数量判断
+        # frame[y:y + h, x:x + w] = self.generatelabelarea(
+        #     '{label_zh} {label_en}'.format(label_zh=self.last_detect_res['detection'][0],
+        #                                    label_en=self.last_detect_res['detection'][1]), x, y, w, h, frame)
 
-        if self.last_detect_res['ocr'] == '无':
+
+        if self.last_detect_res['ocr'] == '':
             # todo 实现画图ocr的相关函数
             src_im, text_list = self.pp_ocr.ppocrprocess(raw_img)
             thumb_img = cv2.resize(src_im, (thumb_img_w, thumb_img_h))
 
             if len(text_list) > 0:
+                self.hand_mode = 'double'
                 ocr_text = ''.join(text_list)
                 self.last_detect_res['ocr'] = ocr_text
             else:
-                self.last_detect_res['ocr'] = '无'
+                self.last_detect_res['ocr'] = ''
         else:
             # 连着上次检测结果
             self.ocr_text = self.last_detect_res['ocr']
 
         frame[0:thumb_img_h, (frame_width - thumb_img_w):frame_width, :] = thumb_img
 
-        # 是否需要显示
-        if self.ocr_text != '' and self.ocr_text != '无':
-            line_text_num = 15
-            line_num = math.ceil(len(self.ocr_text) / line_text_num)
-            y, h = (y + h + 20), (32 * line_num)
-            frame[y:y + h, x:x + w] = self.generateocrarea(self.ocr_text, line_text_num, line_num, x, y, w, h, frame)
+        # # 是否需要显示
+        # if self.ocr_text != '' and self.ocr_text != '无':
+        #     line_text_num = 15
+        #     line_num = math.ceil(len(self.ocr_text) / line_text_num)
+        #     y, h = (y + h + 20), (32 * line_num)
+        #     frame[y:y + h, x:x + w] = self.generateocrarea(self.ocr_text, line_text_num, line_num, x, y, w, h, frame)
         self.last_thumb_img = thumb_img
         return frame
 
@@ -169,72 +170,48 @@ class DrawInFrame:
         x_distance = abs(finger_cord[0] - self.last_finger_x[handedness])
         y_distance = abs(finger_cord[1] - self.last_finger_y[handedness])
 
-        if self.hand_mode == 'single':
-            # 单手模式下遇到双手，释放
-            if self.hand_num == 2:
-                self.clearSingleMode()
-            elif handedness == 'Right':
-                frame = self.singleMode(x_distance, y_distance, handedness, finger_cord, frame, frame_copy)
+        # 未移动
+        if (x_distance <= self.float_distance) and (y_distance <= self.float_distance):
+            # 时间大于触发时间
+            if (time.time() - self.stop_time[handedness]) > self.activate_duration:
 
+                # 画环形图，每隔0.01秒增大5度
+                arc_degree = 5 * ((time.time() - self.stop_time[handedness] - self.activate_duration) // 0.01)
+                if arc_degree <= 360:
+                    frame = self.drawArc(
+                        frame, finger_cord[0], finger_cord[1], arc_radius=50, end=arc_degree,
+                        color=self.handedness_color[handedness], width=15)
+                else:
+                    frame = self.drawArc(
+                        frame, finger_cord[0], finger_cord[1], arc_radius=50, end=360,
+                        color=self.handedness_color[handedness], width=15)
+                    self.last_finger_arc_degree[handedness] = 360
+
+                    # 两个手指圆环都满了，直接触发识别
+                    if (self.last_finger_arc_degree['Left'] >= 360) and (
+                            self.last_finger_arc_degree['Right'] >= 360):
+                        rect_l = (self.last_finger_x['Left'], self.last_finger_y['Left'])
+                        rect_r = (self.last_finger_x['Right'], self.last_finger_y['Right'])
+                        # 外框框
+                        frame = cv2.rectangle(frame, rect_l, rect_r, (0, 255, 0), 2)
+
+                        # 是否需要重新识别
+                        if self.hand_mode != 'double':
+                            # 初始化识别结果
+                            self.last_detect_res = {'detection': None, 'ocr': ''}
+                            ymin = min(self.last_finger_y['Left'], self.last_finger_y['Right'])
+                            ymax = max(self.last_finger_y['Left'], self.last_finger_y['Right'])
+                            xmin = min(self.last_finger_x['Left'], self.last_finger_x['Right'])
+                            xmax = max(self.last_finger_x['Left'], self.last_finger_x['Right'])
+                            # 传给缩略图
+                            raw_img = frame_copy[ymin: ymax, xmin: xmax, ]
+                            frame = self.generateThumb(raw_img, frame)
+                        self.hand_mode = 'double'
         else:
-            # 未移动
-            if (x_distance <= self.float_distance) and (y_distance <= self.float_distance):
-                # 时间大于触发时间
-                if (time.time() - self.stop_time[handedness]) > self.activate_duration:
-
-                    # 画环形图，每隔0.01秒增大5度
-                    arc_degree = 5 * ((time.time() - self.stop_time[handedness] - self.activate_duration) // 0.01)
-                    if arc_degree <= 360:
-                        frame = self.drawArc(
-                            frame, finger_cord[0], finger_cord[1], arc_radius=50, end=arc_degree,
-                            color=self.handedness_color[handedness], width=15)
-                    else:
-                        frame = self.drawArc(
-                            frame, finger_cord[0], finger_cord[1], arc_radius=50, end=360,
-                            color=self.handedness_color[handedness], width=15)
-                        self.last_finger_arc_degree[handedness] = 360
-
-                        # 两个手指圆环都满了，直接触发识别
-                        if (self.last_finger_arc_degree['Left'] >= 360) and (
-                                self.last_finger_arc_degree['Right'] >= 360):
-                            rect_l = (self.last_finger_x['Left'], self.last_finger_y['Left'])
-                            rect_r = (self.last_finger_x['Right'], self.last_finger_y['Right'])
-                            # 外框框
-                            frame = cv2.rectangle(frame, rect_l, rect_r, (0, 255, 0), 2)
-                            # 框框label
-                            if self.last_detect_res['detection']:
-                                # 生成label
-                                x, y, w, h = self.last_finger_x['Left'], (
-                                        self.last_finger_y['Left'] - 50), 120, 50
-                                frame = frame.copy()
-                                frame[y:y + h, x:x + w] = self.generatelabelarea(
-                                    '{label_zh}'.format(label_zh=self.last_detect_res['detection'][0]), x, y, w, h,
-                                    frame)
-
-                            # 是否需要重新识别
-                            if self.hand_mode != 'double':
-                                # 初始化识别结果
-                                self.last_detect_res = {'detection': None, 'ocr': '无'}
-                                ymin = min(self.last_finger_y['Left'], self.last_finger_y['Right'])
-                                ymax = max(self.last_finger_y['Left'], self.last_finger_y['Right'])
-                                xmin = min(self.last_finger_x['Left'], self.last_finger_x['Right'])
-                                xmax = max(self.last_finger_x['Left'], self.last_finger_x['Right'])
-                                # 传给缩略图
-                                raw_img = frame_copy[ymin: ymax, xmin: xmax, ]
-                                frame = self.generateThumb(raw_img, frame)
-
-                            self.hand_mode = 'double'
-
-                            # 只有右手圆环满，触发描线功能
-                        if (self.hand_num == 1) and (self.last_finger_arc_degree['Right'] == 360):
-                            self.hand_mode = 'single'
-                            self.single_hand_last_time = time.time()  # 记录一下时间
-                            self.right_hand_circle_list.append((finger_cord[0], finger_cord[1]))
-
-            else:
-                # 移动位置，重置时间
-                self.stop_time[handedness] = time.time()
-                self.last_finger_arc_degree[handedness] = 0
+            # 移动位置，重置时间
+            self.stop_time[handedness] = time.time()
+            self.last_finger_arc_degree[handedness] = 0
+            self.clearSingleMode()
 
         self.last_finger_x[handedness] = finger_cord[0]
         self.last_finger_y[handedness] = finger_cord[1]
@@ -348,10 +325,10 @@ class FingerOcr2Voice:
                     # 释放单手模式
                     line_len = math.hypot((index_finger_tip_x - middle_finger_tip_x),
                                           (index_finger_tip_y - middle_finger_tip_y))
-
-                    if line_len < 50 and handedness_list[hand_index] == 'Right':
-                        self.drawInfo.clearSingleMode()
-                        self.drawInfo.last_thumb_img = None
+                    #
+                    # if line_len < 50 and handedness_list[hand_index] == 'Right':
+                    #     self.drawInfo.clearSingleMode()
+                    #     self.drawInfo.last_thumb_img = None
 
                         # 传给画图类，如果食指指尖停留超过指定时间（如0.3秒），则启动画图，左右手单独画
                     self.image, text = self.drawInfo.checkIndexFingerMove(handedness_list[hand_index],

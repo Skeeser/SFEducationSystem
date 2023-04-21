@@ -25,7 +25,7 @@ class HandReg:
         # self.resize_w = 960
         # self.resize_h = 720
         self.drawInfo = None
-
+        self.frame = None
 
         mp_drawing_styles = mp.solutions.drawing_styles
         self.handLmsStyle = mp_drawing_styles.get_default_hand_landmarks_style()
@@ -34,6 +34,7 @@ class HandReg:
         self.figure = np.zeros(5)
         self.landmark = np.empty((21, 2))
         self.gesture_result = 'none'
+        self.drawInfo = DrawInFrame()
 
         if not self.cap.isOpened():
             print("Can not open camera.")
@@ -116,7 +117,7 @@ class HandReg:
             self.gesture_result = 'none'
 
         self.frame = cv.cvtColor(frame, cv.COLOR_RGB2BGR)
-        return self.frame, self.gesture_result
+        return self.gesture_result
 
 
     def close_hand_reg(self):
@@ -131,18 +132,21 @@ class HandReg:
         return handedness_list
 
     def recognize(self):
-        self.drawInfo = DrawInFrame()
-        # self.image = cv2.resize(self.image, (self.resize_w, self.resize_h))
+        text = ""
+        if self.frame is None:
+            print("空帧")
+            return text
+
         resize_w = self.frame.shape[1]
         resize_h = self.frame.shape[0]
+
+
         # todo 需要根据镜头位置来调整,动态调整文本角度， 注意要隔一段时间调用
         # self.image = cv2.rotate( self.image, cv2.ROTATE_180)
-
         # 保存缩略图
-        if isinstance(self.drawInfo.last_thumb_img, np.ndarray):
-            self.frame = self.drawInfo.generateThumb(self.drawInfo.last_thumb_img, self.frame)
+        # if isinstance(self.drawInfo.last_thumb_img, np.ndarray):
+        #     self.frame = self.drawInfo.generateThumb(self.drawInfo.last_thumb_img, self.frame)
 
-        hand_num = 0
         # 判断是否有手掌
         if self.result.multi_hand_landmarks:
 
@@ -152,81 +156,82 @@ class HandReg:
 
             self.drawInfo.hand_num = hand_num
 
-            # 复制一份干净的原始frame
-            frame_copy = self.frame.copy()
-            # 遍历每个手掌
-            for hand_index, hand_landmarks in enumerate(self.result.multi_hand_landmarks):
-                # 容错
-                if hand_index > 1:
-                    hand_index = 1
+            if hand_num == 2:
+                # 复制一份干净的原始frame
+                frame_copy = self.frame.copy()
+                # 遍历每个手掌
+                for hand_index, hand_landmarks in enumerate(self.result.multi_hand_landmarks):
+                    # 容错
+                    if hand_index > 1:
+                        hand_index = 1
 
-                # 解析手指，存入各个手指坐标
-                landmark_list = []
+                    # 解析手指，存入各个手指坐标
+                    landmark_list = []
 
-                # 用来存储手掌范围的矩形坐标
-                paw_x_list = []
-                paw_y_list = []
-                for landmark_id, finger_axis in enumerate(
-                        hand_landmarks.landmark):
-                    landmark_list.append([
-                        landmark_id, finger_axis.x, finger_axis.y,
-                        finger_axis.z
-                    ])
-                    paw_x_list.append(finger_axis.x)
-                    paw_y_list.append(finger_axis.y)
-                if landmark_list:
-                    # 比例缩放到像素
-                    ratio_x_to_pixel = lambda x: math.ceil(x * resize_w)
-                    ratio_y_to_pixel = lambda y: math.ceil(y * resize_h)
+                    # 用来存储手掌范围的矩形坐标
+                    paw_x_list = []
+                    paw_y_list = []
+                    for landmark_id, finger_axis in enumerate(
+                            hand_landmarks.landmark):
+                        landmark_list.append([
+                            landmark_id, finger_axis.x, finger_axis.y,
+                            finger_axis.z
+                        ])
+                        paw_x_list.append(finger_axis.x)
+                        paw_y_list.append(finger_axis.y)
+                    if landmark_list:
+                        # 比例缩放到像素
+                        ratio_x_to_pixel = lambda x: math.ceil(x * resize_w)
+                        ratio_y_to_pixel = lambda y: math.ceil(y * resize_h)
 
-                    # 设计手掌左上角、右下角坐标
-                    paw_left_top_x, paw_right_bottom_x = map(ratio_x_to_pixel,
-                                                             [min(paw_x_list), max(paw_x_list)])
-                    paw_left_top_y, paw_right_bottom_y = map(ratio_y_to_pixel,
-                                                             [min(paw_y_list), max(paw_y_list)])
+                        # 设计手掌左上角、右下角坐标
+                        paw_left_top_x, paw_right_bottom_x = map(ratio_x_to_pixel,
+                                                                 [min(paw_x_list), max(paw_x_list)])
+                        paw_left_top_y, paw_right_bottom_y = map(ratio_y_to_pixel,
+                                                                 [min(paw_y_list), max(paw_y_list)])
 
-                    # 获取食指指尖坐标
-                    index_finger_tip = landmark_list[8]
-                    index_finger_tip_x = ratio_x_to_pixel(index_finger_tip[1])
-                    index_finger_tip_y = ratio_y_to_pixel(index_finger_tip[2])
+                        # 获取食指指尖坐标
+                        index_finger_tip = landmark_list[8]
+                        index_finger_tip_x = ratio_x_to_pixel(index_finger_tip[1])
+                        index_finger_tip_y = ratio_y_to_pixel(index_finger_tip[2])
 
-                    # 获取中指指尖坐标
-                    middle_finger_tip = landmark_list[12]
-                    middle_finger_tip_x = ratio_x_to_pixel(middle_finger_tip[1])
-                    middle_finger_tip_y = ratio_y_to_pixel(middle_finger_tip[2])
+                        # 获取中指指尖坐标
+                        middle_finger_tip = landmark_list[12]
+                        middle_finger_tip_x = ratio_x_to_pixel(middle_finger_tip[1])
+                        middle_finger_tip_y = ratio_y_to_pixel(middle_finger_tip[2])
 
-                    # 画x,y,z坐标
-                    label_height = 30
-                    label_wdith = 130
-                    cv.rectangle(self.frame, (paw_left_top_x - 30, paw_left_top_y - label_height - 30),
-                                  (paw_left_top_x + label_wdith, paw_left_top_y - 30), (0, 139, 247), -1)
+                        # 画x,y,z坐标
+                        label_height = 30
+                        label_wdith = 130
+                        cv.rectangle(self.frame, (paw_left_top_x - 30, paw_left_top_y - label_height - 30),
+                                      (paw_left_top_x + label_wdith, paw_left_top_y - 30), (0, 139, 247), -1)
 
-                    l_r_hand_text = handedness_list[hand_index][:1]
+                        l_r_hand_text = handedness_list[hand_index][:1]
 
-                    cv.putText(self.frame,
-                                "{hand} x:{x} y:{y}".format(hand=l_r_hand_text, x=index_finger_tip_x,
-                                                            y=index_finger_tip_y),
-                                (paw_left_top_x - 30 + 10, paw_left_top_y - 40),
-                                cv.FONT_HERSHEY_PLAIN, 1, (255, 255, 255), 2)
+                        cv.putText(self.frame,
+                                    "{hand} x:{x} y:{y}".format(hand=l_r_hand_text, x=index_finger_tip_x,
+                                                                y=index_finger_tip_y),
+                                    (paw_left_top_x - 30 + 10, paw_left_top_y - 40),
+                                    cv.FONT_HERSHEY_PLAIN, 1, (255, 255, 255), 2)
 
-                    # 给手掌画框框
-                    cv.rectangle(self.frame, (paw_left_top_x - 30, paw_left_top_y - 30),
-                                  (paw_right_bottom_x + 30, paw_right_bottom_y + 30), (0, 139, 247), 1)
+                        # 给手掌画框框
+                        cv.rectangle(self.frame, (paw_left_top_x - 30, paw_left_top_y - 30),
+                                      (paw_right_bottom_x + 30, paw_right_bottom_y + 30), (0, 139, 247), 1)
 
-                    # 释放单手模式
-                    line_len = math.hypot((index_finger_tip_x - middle_finger_tip_x),
-                                          (index_finger_tip_y - middle_finger_tip_y))
+                        # 释放单手模式
+                        line_len = math.hypot((index_finger_tip_x - middle_finger_tip_x),
+                                              (index_finger_tip_y - middle_finger_tip_y))
 
-                    if line_len < 50 and handedness_list[hand_index] == 'Right':
-                        self.drawInfo.clearSingleMode()
-                        self.drawInfo.last_thumb_img = None
+                        if line_len < 50 and handedness_list[hand_index] == 'Right':
+                            self.drawInfo.clearSingleMode()
+                            self.drawInfo.last_thumb_img = None
 
-                        # 传给画图类，如果食指指尖停留超过指定时间（如0.3秒），则启动画图，左右手单独画
-                    self.frame, text = self.drawInfo.checkIndexFingerMove(handedness_list[hand_index],
-                                                                          [index_finger_tip_x, index_finger_tip_y],
-                                                                          self.frame, frame_copy)
+                            # 传给画图类，如果食指指尖停留超过指定时间（如0.3秒），则启动画图，左右手单独画
+                        self.frame, text = self.drawInfo.checkIndexFingerMove(handedness_list[hand_index],
+                                                                              [index_finger_tip_x, index_finger_tip_y],
+                                                                              self.frame, frame_copy)
 
-            return self.frame, text
+            return text
 
 
 if __name__ == '__main__':
