@@ -222,9 +222,9 @@ class HandReg:
                         line_len = math.hypot((index_finger_tip_x - middle_finger_tip_x),
                                               (index_finger_tip_y - middle_finger_tip_y))
 
-                        if line_len < 50 and handedness_list[hand_index] == 'Right':
-                            self.drawInfo.clearSingleMode()
-                            self.drawInfo.last_thumb_img = None
+                        # if line_len < 50 and handedness_list[hand_index] == 'Right':
+                        #     self.drawInfo.clearSingleMode()
+                        #     self.drawInfo.last_thumb_img = None
 
                             # 传给画图类，如果食指指尖停留超过指定时间（如0.3秒），则启动画图，左右手单独画
                         self.frame, text = self.drawInfo.checkIndexFingerMove(handedness_list[hand_index],

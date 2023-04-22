@@ -132,11 +132,9 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
             if self.now_page == "Ocr":
                 # ocr处理
                 text = self.recognize()
-                print(text)
+                # print(text)
                 if text != "" and text is not None:
                     self.send_signal.emit(text + '\n')
-                else:
-                    self.show_message_signal.emit("未识别到，正在重试", False)
                 # if self.construct == "Retry":
                 #     self.frame, text = self.hand_reg.recognize()
                 #     self.send_signal.emit(text + '\n')

@@ -108,11 +108,19 @@ void loop()
         last_construct = construct;
         if (construct == "Next" || news_flag == 0)
         {
-          news_flag++;
           if (news_flag == 5)
             news_flag = 0;
           Page_Paint_DailyNews(readbuff, news_buff[news_flag]);
+          news_flag++;
         }
+      }
+    }
+    else if (now_page == "Ocr")
+    {
+      auto temp_ocr = wifi.WifiTcpRead();
+      if (temp_ocr != "")
+      {
+        Page_Paint_OCR(readbuff, temp_ocr);
       }
     }
   }

@@ -6,7 +6,8 @@
       <change beforePath="$PROJECT_DIR$/../SFEducation/src/Ocr/ocr_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/../SFEducation/src/Ocr/ocr_run.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SFEducation/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../SFEducation/src/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/paint_page.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/paint_page.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/include/paint_page.h" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/include/paint_page.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +104,8 @@
       <workItem from="1681827074552" duration="7442000" />
       <workItem from="1681873113765" duration="3525000" />
       <workItem from="1681951877911" duration="1003000" />
-      <workItem from="1682060640117" duration="1225000" />
+      <workItem from="1682060640117" duration="1227000" />
+      <workItem from="1682133363638" duration="851000" />
     </task>
     <servers />
   </component>

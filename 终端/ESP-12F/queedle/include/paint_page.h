@@ -10,4 +10,5 @@ bool Is_Trans_Time();
 void Page_Paint_Test(unsigned char *BlackImage);
 void Page_Paint_Menu(unsigned char *BlackImage);
 void Page_Paint_DailyNews(unsigned char *BlackImage, String news_data);
+void Page_Paint_OCR(unsigned char *BlackImage, String news_data);
 #endif
