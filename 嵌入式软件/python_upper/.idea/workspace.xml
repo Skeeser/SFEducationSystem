@@ -6,7 +6,6 @@
       <change beforePath="$PROJECT_DIR$/../SFEducation/src/Ocr/ocr_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/../SFEducation/src/Ocr/ocr_run.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SFEducation/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../SFEducation/src/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/include/paint_page.h" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/include/paint_page.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../终端/ESP-12F/queedle/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -105,7 +104,7 @@
       <workItem from="1681873113765" duration="3525000" />
       <workItem from="1681951877911" duration="1003000" />
       <workItem from="1682060640117" duration="1227000" />
-      <workItem from="1682133363638" duration="851000" />
+      <workItem from="1682133363638" duration="1451000" />
     </task>
     <servers />
   </component>
@@ -134,6 +133,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/python_upper$img_trans.coverage" NAME="img_trans 覆盖结果" MODIFIED="1681636191149" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/PictureProcess" />
-    <SUITE FILE_PATH="coverage/python_upper$main.coverage" NAME="main 覆盖结果" MODIFIED="1681921262514" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/python_upper$main.coverage" NAME="main 覆盖结果" MODIFIED="1682149416171" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
   </component>
 </project>

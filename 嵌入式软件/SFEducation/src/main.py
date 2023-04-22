@@ -38,7 +38,7 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
         self.start()
         # self.hand_reg = HandReg()
         self.news_get = NewsGet()
-        self.send_signal.emit('head ' + self.now_page + ' ' + self.construct + '\n')
+
 
     def start(self):
         self.timer.start(10)
@@ -47,6 +47,8 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
     def link_signal_handle(self, signal) -> None:
         link_type, my_ip, port = signal
         self.tcp_server_start(my_ip, port)
+        time.sleep(2)
+        self.send_signal.emit('head ' + self.now_page + ' ' + self.construct + '\n')
 
     # 断开连接槽函数
     def disconnect_signal_handle(self) -> None:
@@ -79,8 +81,10 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
         # 设定三秒才能更新
         if (time.time() - self.last_time) > 2:
             self.last_time = time.time()
+            self.last_construct = self.construct
+            self.construct = "Enter"
+
             if self.now_page == "Menu":
-                self.construct = "Enter"
                 if hand_num == "one":
                     self.now_page = "News"
                 elif hand_num == "two":
@@ -89,8 +93,6 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
                     self.now_page = "Chat"
 
             elif self.now_page == "News":
-                self.last_construct = self.construct
-                self.construct = "Enter"
                 if hand_num == "one":
                     self.construct = "Next"
                 elif hand_num == "two":
@@ -100,12 +102,12 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
                     self.send_signal.emit('head ' + self.now_page + ' ' + "wait" + '\n')
 
             elif self.now_page == "Ocr":
-                self.construct = "Enter"
-                if hand_num == "one":
-                    self.construct = "Retry"
-                elif hand_num == "two":
+                if hand_num == "two":
                     self.construct = "Back"
                     self.now_page = "Menu"
+                elif self.last_construct == "Retry" and hand_num == "none":
+                    self.send_signal.emit('head ' + self.now_page + ' ' + "wait" + '\n')
+
             elif self.now_page == "Chat":
                 self.construct = "Enter"
                 if hand_num == "one":
@@ -132,12 +134,10 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
             if self.now_page == "Ocr":
                 # ocr处理
                 text = self.recognize()
-                # print(text)
                 if text != "" and text is not None:
+                    self.construct = "Retry"
+                    self.send_signal.emit('head ' + self.now_page + ' ' + "Retry" + '\n')
                     self.send_signal.emit(text + '\n')
-                # if self.construct == "Retry":
-                #     self.frame, text = self.hand_reg.recognize()
-                #     self.send_signal.emit(text + '\n')
 
     def while_func(self):
         hand_num = self.detect()

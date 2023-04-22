@@ -206,7 +206,11 @@ class DrawInFrame:
                             # 传给缩略图
                             raw_img = frame_copy[ymin: ymax, xmin: xmax, ]
                             frame = self.generateThumb(raw_img, frame)
+                        else:
+                            self.ocr_text = ''
+
                         self.hand_mode = 'double'
+
         else:
             # 移动位置，重置时间
             self.stop_time[handedness] = time.time()

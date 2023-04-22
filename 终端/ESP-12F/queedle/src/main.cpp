@@ -73,11 +73,11 @@ void loop()
 
   if (receive_data.substring(0, index_head) == "head")
   {
-    Serial.println("receive head!!");
+    Serial.print("receive head => ");
     int index_now_page = receive_data.indexOf(" ", index_head + 1);
     now_page = receive_data.substring(index_head + 1, index_now_page);
     construct = receive_data.substring(index_now_page + 1, receive_data.length());
-
+    Serial.println("[" + now_page + "]");
     if (now_page == "Menu")
     {
       if (now_page != last_page)
@@ -92,6 +92,7 @@ void loop()
       {
         last_page = now_page;
         int i = 0;
+        news_flag = 0;
         while (i != 5)
         {
           auto temp_new = wifi.WifiTcpRead();
@@ -102,7 +103,6 @@ void loop()
           }
         }
       }
-
       if (last_construct != construct)
       {
         last_construct = construct;
@@ -117,10 +117,24 @@ void loop()
     }
     else if (now_page == "Ocr")
     {
-      auto temp_ocr = wifi.WifiTcpRead();
-      if (temp_ocr != "")
+      if (now_page != last_page)
       {
-        Page_Paint_OCR(readbuff, temp_ocr);
+        last_page = now_page;
+        Page_Paint_OCR(readbuff, "Please Click what you want to Read!");
+      }
+      if (last_construct != construct)
+      {
+        last_construct = construct;
+        if (construct == "Retry")
+        {
+          String temp_ocr = "";
+          while (temp_ocr == "") // todo 超时控制
+          {
+            temp_ocr = wifi.WifiTcpRead();
+          }
+
+          Page_Paint_OCR(readbuff, temp_ocr); // temp_ocr
+        }
       }
     }
   }

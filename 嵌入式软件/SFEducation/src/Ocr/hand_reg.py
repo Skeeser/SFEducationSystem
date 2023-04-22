@@ -226,12 +226,14 @@ class HandReg:
                         #     self.drawInfo.clearSingleMode()
                         #     self.drawInfo.last_thumb_img = None
 
-                            # 传给画图类，如果食指指尖停留超过指定时间（如0.3秒），则启动画图，左右手单独画
-                        self.frame, text = self.drawInfo.checkIndexFingerMove(handedness_list[hand_index],
+                        # 传给画图类，如果食指指尖停留超过指定时间（如0.3秒），则启动画图，左右手单独画
+                        self.frame, last_text = self.drawInfo.checkIndexFingerMove(handedness_list[hand_index],
                                                                               [index_finger_tip_x, index_finger_tip_y],
                                                                               self.frame, frame_copy)
+                        if last_text != "":
+                            text = last_text
 
-            return text
+        return text
 
 
 if __name__ == '__main__':
