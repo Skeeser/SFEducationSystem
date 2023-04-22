@@ -19,7 +19,7 @@ class OcrClass:
         out = self.ocr.ocr(image)
         ret = ''
         for line in out:
-            ret += line.get('text')
+            ret += line.get('text') + ' '
         print(ret)
         return image, ret
 
@@ -131,6 +131,8 @@ class DrawInFrame:
                 self.hand_mode = 'double'
                 self.ocr_text = ''.join(text_list)
                 self.last_detect_res['ocr'] = self.ocr_text
+                self.pp_voice.sayaddtext(self.ocr_text)
+                self.pp_voice.saystart()
             else:
                 self.last_detect_res['ocr'] = ''
         else:

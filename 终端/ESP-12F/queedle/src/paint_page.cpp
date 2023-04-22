@@ -166,9 +166,8 @@ void Page_Paint_OCR(unsigned char *BlackImage, String news_data)
     Paint_DrawRectangle(1, 1, 300, 35, BLACK, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
     Paint_DrawRectangle(1, 1, 100, 35, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
     Paint_DrawString_EN(20, 5, "OCR", &Font24, BLACK, WHITE);
-    Paint_DrawRectangle(105, 1, 141, 35, BLACK, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
-    Paint_DrawRectangle(141, 1, 200, 35, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
-
+    Paint_DrawRectangle(205, 1, 241, 35, BLACK, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
+    Paint_DrawRectangle(241, 1, 300, 35, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
     Paint_DrawImage(gImage_two_fingers, 206, 1, 68, 68, 2);
     Paint_DrawString_EN(243, 7, "Back", &Font20, BLACK, WHITE);
     Paint_DrawLine(1, 37, 300, 37, BLACK, DOT_PIXEL_1X1, LINE_STYLE_DOTTED);
