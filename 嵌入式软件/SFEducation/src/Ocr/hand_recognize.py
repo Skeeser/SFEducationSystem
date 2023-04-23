@@ -44,12 +44,6 @@ class DrawSomeInfo:
 
         self.last_thumb_img = None
 
-        # 导入识别、OCR类
-        self.pp_ocr = Baidu_PP_OCR()
-        # ocr.test_ocr()
-
-        self.pp_dete = Baidu_PP_Detection()
-        # dete.test_predict_video(0)
 
         # 上次检测结果
         self.last_detect_res = {'detection': None, 'ocr': '无'}

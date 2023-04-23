@@ -30,6 +30,10 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
         self.frame = None
         self.chat_th = None  # 服务端线程
 
+        styleFile = '../QSS/MacOS.qss'
+        qssStyle = CommonHelper.read_qss(styleFile)
+        self.setStyleSheet(qssStyle)
+
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.while_func)
 
@@ -173,6 +177,8 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
 
 
     def while_func(self):
+        # 计算刷新率
+        fpsTime = time.time()
         hand_num = self.detect()
 
         if self.num_count[1] == hand_num:
@@ -189,16 +195,15 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
         if self.frame is not None:
             self.show_video_signal_handle(self.frame)
 
+        cTime = time.time()
+        fps_text = 1 / (cTime - fpsTime)
+        self.frame_num_signal.emit(int(fps_text))
 
 
 if __name__ == "__main__" :
     app = QApplication(sys.argv)
 
     window = MainWindow()
-
-    # styleFile = 'src/MacOS.qss'
-    # qssStyle = CommonHelper.read_qss(styleFile)
-    # window.setStyleSheet(qssStyle)
 
     window.show()
 

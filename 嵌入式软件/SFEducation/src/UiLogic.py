@@ -87,7 +87,7 @@ class UiWidgetLogic(QWidget):
         self.myui.now_page.setText(text)
 
     def frame_num_handle(self, frame_num: int):
-        self.myui.frame_num.setNum(frame_num)
+        self.myui.frame_lcdNumber.setNum(frame_num)
 
     def hand_mode_handle(self, hand_mode: str):
         self.myui.hand_mod.setText(hand_mode)
