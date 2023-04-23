@@ -202,8 +202,10 @@ void Page_Paint_Chat(unsigned char *BlackImage, String User_data, String Robot_d
     Paint_DrawLine(1, 180, 300, 180, BLACK, DOT_PIXEL_2X2, LINE_STYLE_DOTTED);
     Paint_DrawLine(1, 398, 300, 398, BLACK, DOT_PIXEL_1X1, LINE_STYLE_DOTTED);
     Paint_DrawLine(1, 400, 300, 400, BLACK, DOT_PIXEL_1X1, LINE_STYLE_DOTTED);
-    Paint_DrawString_EN(1, 39, "Usr=>" + User_data.c_str(), &Font16, WHITE, BLACK);
-    Paint_DrawString_EN(1, 186, "Robot=>" + Robot_data.c_str(), &Font16, WHITE, BLACK);
+    Paint_DrawString_EN(1, 39, "User=>", &Font20, WHITE, BLACK);
+    Paint_DrawString_EN(1, 63, User_data.c_str(), &Font16, WHITE, BLACK);
+    Paint_DrawString_EN(1, 186, "Robot=>", &Font20, WHITE, BLACK);
+    Paint_DrawString_EN(1, 210, Robot_data.c_str(), &Font16, WHITE, BLACK);
 
     Serial.println("Page DailyNews has painted...");
     EpdDisplay((const unsigned char *)BlackImage);

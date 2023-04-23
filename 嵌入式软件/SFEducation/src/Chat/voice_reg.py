@@ -111,7 +111,7 @@ class VoiceRecognize:
                     for w in i["cw"]:
                         self.result += w["w"]
                 # print("sid:%s call success!,data is:%s" % (sid, json.dumps(data, ensure_ascii=False)))
-                print("result is =>", self.result)
+                print("result is =>", self.result.lstrip())
         except Exception as e:
             print("receive msg,but parse exception:", e)
 
@@ -186,7 +186,7 @@ class VoiceRecognize:
         time1 = datetime.now()
         self.wsParam = Ws_Param(APPID='b763660c', APISecret='OWVmYzYzMGMxOTJmOWNlZjM1ZDI2ODE5',
                            APIKey='e478762155210ab541cf811cdac5dea0',
-                           AudioFile=r'D:\AllMyProject\ElectricDesign_project\嵌入式国赛\SFEducationSystem\嵌入式软件\SFEducation\src\Chat\iat_mp3_8k.mp3')
+                           AudioFile=r'iat_mp3_8k.mp3')
         websocket.enableTrace(False)
         wsUrl = self.wsParam.create_url()
         ws = websocket.WebSocketApp(wsUrl, on_message=self.on_message, on_error=self.on_error, on_close=self.on_close)

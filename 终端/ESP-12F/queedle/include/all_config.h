@@ -44,7 +44,7 @@
 // wifi开关
 #define IFWIFI 1
 #define IFTCP 1
-#define IFTIME 0
+#define IFTIME 1
 
 #define LIMIT_TIME 60000 // 1min
 

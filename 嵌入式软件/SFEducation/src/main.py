@@ -142,6 +142,7 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
             self.construct_signal.emit(self.construct)
 
     def th_chat_func(self):
+        self.last_construct = "Start"
         voice_text = self.voice_recognize.run()
         response_txt = self.chat.english_chat(voice_text)
         print("Robot=> " + response_txt)
@@ -171,7 +172,6 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
                     self.send_signal.emit(text + '\n')
             elif self.now_page == "Chat":
                 if self.last_construct != self.construct and self.construct == "Start":
-                    self.last_construct = "Start"
                     self.chat_th = threading.Thread(target=self.th_chat_func)
                     self.chat_th.start()
 

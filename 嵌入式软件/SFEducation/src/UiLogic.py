@@ -1,18 +1,11 @@
 import sys
 import numpy as np
-from PIL.PpmImagePlugin import PpmImageFile
-from PyQt5.QtCore import QSize, Qt, pyqtSignal, QRect
-from PyQt5.QtGui import QPixmap, QImage, QColor
-from PyQt5.QtWidgets import QWidget, QApplication, QFileDialog, QGraphicsScene, QGraphicsPixmapItem
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtWidgets import QWidget, QApplication, QGraphicsScene
 from src.Network.Tcp import get_host_ip
 from src.Tools.CommonHelper import CommonHelper
-
 from src.UI.SFEducation import Ui_Form
-# from PIL import Image, ImageChops,ImageQt
-# from src.PictureProcess.mygraphics import GraphicsView, GraphicsPixmapItem
-
-# from src.UI.queele_ui import Ui_Form
-
 # 更新命令
 # pyuic5 -o src/UI/SFEducation.py src/UI/SFEducation.ui
 

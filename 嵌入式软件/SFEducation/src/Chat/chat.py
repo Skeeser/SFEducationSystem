@@ -1,9 +1,6 @@
 import sys
 import os
-import warnings
 import aiml
-from src.Ocr.ocr_run import VoiceOfOcr
-
 
 class Chat:
     def __init__(self):
