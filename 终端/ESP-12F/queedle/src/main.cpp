@@ -1,4 +1,4 @@
-#include <Arduino.h>
+include<Arduino.h>
 #include "pic.h"
 #include "all_config.h"
 #include "delay.h"
@@ -9,8 +9,8 @@
 // #include "part.h"
 #include "paint_page.h"
 
-// 定义wifi用户名和密码
-const char *SSID = "OnePlus 8";     // 要连接的WiFi的名称
+    // 定义wifi用户名和密码
+    const char *SSID = "OnePlus 8"; // 要连接的WiFi的名称
 const char *PASSWORD = "zgx441427"; // 要连接的WiFi的密码
 const char *HOST = "192.168.140.132";
 const int TCPPORT = 8266;
@@ -134,6 +134,33 @@ void loop()
           }
 
           Page_Paint_OCR(readbuff, temp_ocr); // temp_ocr
+        }
+      }
+    }
+    else if (now_page == "Chat")
+    {
+      if (now_page != last_page)
+      {
+        last_page = now_page;
+        Page_Paint_OCR(readbuff, " ", " ");
+      }
+      if (last_construct != construct)
+      {
+        last_construct = construct;
+        if (construct == "Start")
+        {
+          String temp_user = "";
+          String temp_robot = "";
+          while (temp_user == "") // todo 超时控制
+          {
+            temp_user = wifi.WifiTcpRead();
+          }
+          while (temp_robot == "") // todo 超时控制
+          {
+            temp_robot = wifi.WifiTcpRead();
+          }
+
+          Page_Paint_OCR(readbuff, temp_user, temp_robot); // temp_ocr
         }
       }
     }

@@ -179,3 +179,33 @@ void Page_Paint_OCR(unsigned char *BlackImage, String news_data)
     EpdDisplay((const unsigned char *)BlackImage);
     delay(1000);
 }
+
+void Page_Paint_Chat(unsigned char *BlackImage, String User_data, String Robot_data)
+{
+    Paint_NewImage(BlackImage, MAX_LINE_BYTES * 8, MAX_COLUMN_BYTES, ROTATE_90, MIRROR_HORIZONTAL, WHITE);
+    Paint_SelectImage(BlackImage);
+    Paint_Clear(WHITE);
+    Serial.println("\nPage Chat start painting");
+
+    Paint_DrawRectangle(1, 1, 300, 35, BLACK, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
+    Paint_DrawRectangle(1, 1, 100, 35, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
+    Paint_DrawString_EN(20, 5, "News", &Font24, BLACK, WHITE);
+    Paint_DrawRectangle(105, 1, 141, 35, BLACK, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
+    Paint_DrawRectangle(141, 1, 200, 35, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
+    Paint_DrawImage(gImage_single_finger, 106, 1, 68, 68, 2);
+    Paint_DrawString_EN(143, 7, "Start", &Font16, BLACK, WHITE);
+    Paint_DrawRectangle(205, 1, 241, 35, BLACK, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
+    Paint_DrawRectangle(241, 1, 300, 35, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
+    Paint_DrawImage(gImage_two_fingers, 206, 1, 68, 68, 2);
+    Paint_DrawString_EN(243, 7, "Back", &Font20, BLACK, WHITE);
+    Paint_DrawLine(1, 37, 300, 37, BLACK, DOT_PIXEL_1X1, LINE_STYLE_DOTTED);
+    Paint_DrawLine(1, 180, 300, 180, BLACK, DOT_PIXEL_2X2, LINE_STYLE_DOTTED);
+    Paint_DrawLine(1, 398, 300, 398, BLACK, DOT_PIXEL_1X1, LINE_STYLE_DOTTED);
+    Paint_DrawLine(1, 400, 300, 400, BLACK, DOT_PIXEL_1X1, LINE_STYLE_DOTTED);
+    Paint_DrawString_EN(1, 39, "Usr=>" + User_data.c_str(), &Font16, WHITE, BLACK);
+    Paint_DrawString_EN(1, 186, "Robot=>" + Robot_data.c_str(), &Font16, WHITE, BLACK);
+
+    Serial.println("Page DailyNews has painted...");
+    EpdDisplay((const unsigned char *)BlackImage);
+    delay(1000);
+}
