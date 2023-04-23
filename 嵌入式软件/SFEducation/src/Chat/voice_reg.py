@@ -111,7 +111,7 @@ class VoiceRecognize:
                     for w in i["cw"]:
                         self.result += w["w"]
                 # print("sid:%s call success!,data is:%s" % (sid, json.dumps(data, ensure_ascii=False)))
-                print("result is =>", self.result.lstrip())
+                print("result is =>", self.result)
         except Exception as e:
             print("receive msg,but parse exception:", e)
 

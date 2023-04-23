@@ -151,7 +151,7 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
         self.show_message_signal.emit("Usrer=> " + voice_text, False)
         self.show_message_signal.emit("Robot=> " + response_txt, True)
         self.send_signal.emit(voice_text + '\n')
-        self.send_signal.emit(response_txt + '\n')
+        self.send_signal.emit("  " + response_txt + '\n')
 
     def action_judge(self):
 
