@@ -11,6 +11,9 @@ from src.Tools.CommonHelper import CommonHelper
 from src.UiLogic import UiWidgetLogic
 from src.Chat.chat import Chat
 from src.Chat.voice_reg import VoiceRecognize
+from src.Ocr.ocr_run import VoiceOfOcr
+import threading
+from src.Network import StopThreading
 # 打包指令 auto-py-to-exe
 
 
@@ -25,6 +28,7 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
         self.last_construct = 'none'
         self.last_time = time.time()
         self.frame = None
+        self.chat_th = None  # 服务端线程
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.while_func)
@@ -40,6 +44,7 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
         self.news_get = NewsGet()
         self.chat = Chat()
         self.voice_recognize = VoiceRecognize()
+        self.pp_voice = VoiceOfOcr()
         self.send_signal.emit('head ' + self.now_page + ' ' + self.construct + '\n')
 
     def start(self):
@@ -75,6 +80,7 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
         self.disconnect_signal_handle()
         self.hand_reg.close_hand_reg()
         self.timer.stop()
+        StopThreading.stop_thread(self.chat_th)
 
     def news_get_signal_handle(self):
         pass
@@ -118,6 +124,7 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
                     self.construct = "Back"
                     self.now_page = "Menu"
                 elif self.last_construct == "Start" and hand_num == "none":
+
                     self.send_signal.emit('head ' + self.now_page + ' ' + "wait" + '\n')
 
             if hand_num != "none":
@@ -129,6 +136,17 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
 
             self.now_page_signal.emit(self.now_page)
             self.construct_signal.emit(self.construct)
+
+    def th_chat_func(self):
+        voice_text = self.voice_recognize.run()
+        response_txt = self.chat.english_chat(voice_text)
+        print("Robot=> " + response_txt)
+        self.pp_voice.sayaddtext(response_txt)
+        self.pp_voice.saystart()
+        self.show_message_signal.emit("Usrer=> " + voice_text, False)
+        self.show_message_signal.emit("Robot=> " + response_txt, True)
+        self.send_signal.emit(voice_text + '\n')
+        self.send_signal.emit(response_txt + '\n')
 
     def action_judge(self):
 
@@ -150,13 +168,9 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
             elif self.now_page == "Chat":
                 if self.last_construct != self.construct and self.construct == "Start":
                     self.last_construct = "Start"
-                    voice_text = self.voice_recognize.run()
-                    response_txt = self.chat.english_chat(voice_text)
-                    print("Robot=> " + response_txt)
-                    self.show_message_signal.emit("Usrer=> " + voice_text, False)
-                    self.show_message_signal.emit("Robot=> " + response_txt, True)
-                    self.send_signal.emit(voice_text + '\n')
-                    self.send_signal.emit(response_txt + '\n')
+                    self.chat_th = threading.Thread(target=self.th_chat_func)
+                    self.chat_th.start()
+
 
     def while_func(self):
         hand_num = self.detect()

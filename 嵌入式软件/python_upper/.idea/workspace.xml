@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5ac4c6b9-c010-4fc1-874b-a87c36960add" name="变更" comment="">
-      <change afterPath="$PROJECT_DIR$/../SFEducation/src/MacOS.qss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SFEducation/src/Chat/chat.py" beforeDir="false" afterPath="$PROJECT_DIR$/../SFEducation/src/Chat/chat.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SFEducation/src/Chat/voice_reg.py" beforeDir="false" afterPath="$PROJECT_DIR$/../SFEducation/src/Chat/voice_reg.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SFEducation/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../SFEducation/src/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
@@ -105,7 +102,8 @@
       <workItem from="1681951877911" duration="1003000" />
       <workItem from="1682060640117" duration="1227000" />
       <workItem from="1682133363638" duration="1452000" />
-      <workItem from="1682211209443" duration="624000" />
+      <workItem from="1682211209443" duration="625000" />
+      <workItem from="1682236805225" duration="679000" />
     </task>
     <servers />
   </component>
