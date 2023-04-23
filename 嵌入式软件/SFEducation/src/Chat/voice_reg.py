@@ -88,30 +88,32 @@ class Ws_Param(object):
         return url
 
 
-# 收到websocket消息的处理
-def on_message(ws, message):
-    try:
-        code = json.loads(message)["code"]
-        sid = json.loads(message)["sid"]
-        if code != 0:
-            errMsg = json.loads(message)["message"]
-            print("sid:%s call error:%s code is:%s" % (sid, errMsg, code))
-
-        else:
-            data = json.loads(message)["data"]["result"]["ws"]
-            # print(json.loads(message))
-            result = ""
-            for i in data:
-                for w in i["cw"]:
-                    result += w["w"]
-            # print("sid:%s call success!,data is:%s" % (sid, json.dumps(data, ensure_ascii=False)))
-            print("result is =>", result)
-    except Exception as e:
-        print("receive msg,but parse exception:", e)
-
 class VoiceRecognize:
     def __init__(self):
-        pass
+        self.wsParam = None
+        self.result = ""
+        self.keep_time = 5
+
+    # 收到websocket消息的处理
+    def on_message(self, ws, message):
+        try:
+            code = json.loads(message)["code"]
+            sid = json.loads(message)["sid"]
+            if code != 0:
+                errMsg = json.loads(message)["message"]
+                print("sid:%s call error:%s code is:%s" % (sid, errMsg, code))
+
+            else:
+                data = json.loads(message)["data"]["result"]["ws"]
+                # print(json.loads(message))
+                self.result = ""
+                for i in data:
+                    for w in i["cw"]:
+                        self.result += w["w"]
+                # print("sid:%s call success!,data is:%s" % (sid, json.dumps(data, ensure_ascii=False)))
+                print("result is =>", self.result)
+        except Exception as e:
+            print("receive msg,but parse exception:", e)
 
     # 收到websocket错误的处理
     def on_error(self, ws, error):
@@ -141,15 +143,15 @@ class VoiceRecognize:
 
             print("- - - - - - - Start Recording ...- - - - - - - ")
             # 此处调节秒数
-            for i in range(0, int(RATE / CHUNK * 5)):
+            for i in range(0, int(RATE / CHUNK * self.keep_time )):
                 # # 读出声卡缓冲区的音频数据
                 buf = stream.read(CHUNK)
                 if not buf:
                     status = STATUS_LAST_FRAME
                 if status == STATUS_FIRST_FRAME:
 
-                    d = {"common": wsParam.CommonArgs,
-                         "business": wsParam.BusinessArgs,
+                    d = {"common": self.wsParam.CommonArgs,
+                         "business": self.wsParam.BusinessArgs,
                          "data": {"status": 0, "format": "audio/L16;rate=16000",
                                   "audio": str(base64.b64encode(buf), 'utf-8'),
                                   "encoding": "raw"}}
@@ -182,18 +184,19 @@ class VoiceRecognize:
     def run(self):
         # 测试时候在此处正确填写相关信息即可运行
         time1 = datetime.now()
-        wsParam = Ws_Param(APPID='b763660c', APISecret='OWVmYzYzMGMxOTJmOWNlZjM1ZDI2ODE5',
+        self.wsParam = Ws_Param(APPID='b763660c', APISecret='OWVmYzYzMGMxOTJmOWNlZjM1ZDI2ODE5',
                            APIKey='e478762155210ab541cf811cdac5dea0',
                            AudioFile=r'D:\AllMyProject\ElectricDesign_project\嵌入式国赛\SFEducationSystem\嵌入式软件\SFEducation\src\Chat\iat_mp3_8k.mp3')
         websocket.enableTrace(False)
-        wsUrl = wsParam.create_url()
-        ws = websocket.WebSocketApp(wsUrl, on_message=on_message, on_error=self.on_error, on_close=self.on_close)
+        wsUrl = self.wsParam.create_url()
+        ws = websocket.WebSocketApp(wsUrl, on_message=self.on_message, on_error=self.on_error, on_close=self.on_close)
         ws.on_open = self.on_open
         ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})
         time2 = datetime.now()
         print(time2 - time1)
+        return self.result
 
 
 if __name__ == "__main__":
     myvoice = VoiceRecognize()
-    myvoice.run()
+    print(myvoice.run())

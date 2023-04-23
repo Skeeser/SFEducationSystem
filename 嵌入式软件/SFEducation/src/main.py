@@ -9,7 +9,8 @@ from src.Network.net_init import NetworkLogic
 from src.Ocr.hand_reg import HandReg
 from src.Tools.CommonHelper import CommonHelper
 from src.UiLogic import UiWidgetLogic
-from src.Ocr.ocr_run import FingerOcr2Voice
+from src.Chat.chat import Chat
+from src.Chat.voice_reg import VoiceRecognize
 # 打包指令 auto-py-to-exe
 
 
@@ -36,9 +37,10 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
         # 连接网络
         self.net_link_handle()
         self.start()
-        # self.hand_reg = HandReg()
         self.news_get = NewsGet()
-
+        self.chat = Chat()
+        self.voice_recognize = VoiceRecognize()
+        self.send_signal.emit('head ' + self.now_page + ' ' + self.construct + '\n')
 
     def start(self):
         self.timer.start(10)
@@ -47,8 +49,8 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
     def link_signal_handle(self, signal) -> None:
         link_type, my_ip, port = signal
         self.tcp_server_start(my_ip, port)
-        time.sleep(2)
-        self.send_signal.emit('head ' + self.now_page + ' ' + self.construct + '\n')
+        # time.sleep(2)
+
 
     # 断开连接槽函数
     def disconnect_signal_handle(self) -> None:
@@ -111,12 +113,19 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
             elif self.now_page == "Chat":
                 self.construct = "Enter"
                 if hand_num == "one":
-                    self.construct = "Next"
+                    self.construct = "Start"
                 elif hand_num == "two":
                     self.construct = "Back"
                     self.now_page = "Menu"
+                elif self.last_construct == "Start" and hand_num == "none":
+                    self.send_signal.emit('head ' + self.now_page + ' ' + "wait" + '\n')
+
             if hand_num != "none":
-                self.send_signal.emit('head ' + self.now_page + ' ' + self.construct + '\n')
+                if self.now_page != "Chat":
+                    self.send_signal.emit('head ' + self.now_page + ' ' + self.construct + '\n')
+                else:
+                    if (self.last_construct != self.construct and self.construct == "Start") or self.construct != "Start":
+                        self.send_signal.emit('head ' + self.now_page + ' ' + self.construct + '\n')
 
             self.now_page_signal.emit(self.now_page)
             self.construct_signal.emit(self.construct)
@@ -138,6 +147,16 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
                     self.construct = "Retry"
                     self.send_signal.emit('head ' + self.now_page + ' ' + "Retry" + '\n')
                     self.send_signal.emit(text + '\n')
+            elif self.now_page == "Chat":
+                if self.last_construct != self.construct and self.construct == "Start":
+                    self.last_construct = "Start"
+                    voice_text = self.voice_recognize.run()
+                    response_txt = self.chat.english_chat(voice_text)
+                    print("Robot=> " + response_txt)
+                    self.show_message_signal.emit("Usrer=> " + voice_text, False)
+                    self.show_message_signal.emit("Robot=> " + response_txt, True)
+                    self.send_signal.emit(voice_text + '\n')
+                    self.send_signal.emit(response_txt + '\n')
 
     def while_func(self):
         hand_num = self.detect()
@@ -163,9 +182,9 @@ if __name__ == "__main__" :
 
     window = MainWindow()
 
-    styleFile = '../QSS/MacOS.qss'
-    qssStyle = CommonHelper.read_qss(styleFile)
-    window.setStyleSheet(qssStyle)
+    # styleFile = 'src/MacOS.qss'
+    # qssStyle = CommonHelper.read_qss(styleFile)
+    # window.setStyleSheet(qssStyle)
 
     window.show()
 
