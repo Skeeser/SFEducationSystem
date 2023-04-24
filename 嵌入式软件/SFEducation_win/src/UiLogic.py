@@ -96,6 +96,7 @@ class UiWidgetLogic(QWidget):
         pixmap = QPixmap.fromImage(pix_img)
         # pixitem = QGraphicsPixmapItem()
         # self.scene.addItem(pixitem.setPixmap(pixmap))
+        self.scene.clear()
         self.myui.ShowImage_.setScene(self.scene)
         self.scene.addPixmap(pixmap)
 
