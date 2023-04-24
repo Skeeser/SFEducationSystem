@@ -3,9 +3,9 @@ import numpy as np
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtWidgets import QWidget, QApplication, QGraphicsScene
-from src.Network.Tcp import get_host_ip
-from src.Tools.CommonHelper import CommonHelper
-from src.UI.SFEducation import Ui_Form
+from src.Tcp import get_host_ip
+from src.CommonHelper import CommonHelper
+from src.SFEducation import Ui_Form
 # 更新命令
 # pyuic5 -o src/UI/SFEducation.py src/UI/SFEducation.ui
 
@@ -96,6 +96,7 @@ class UiWidgetLogic(QWidget):
         pixmap = QPixmap.fromImage(pix_img)
         # pixitem = QGraphicsPixmapItem()
         # self.scene.addItem(pixitem.setPixmap(pixmap))
+        self.scene.clear()
         self.myui.ShowImage_.setScene(self.scene)
         self.scene.addPixmap(pixmap)
 

@@ -1,7 +1,7 @@
 import sys
-from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget, QApplication, QMessageBox, QFileDialog
-from src.Network.Tcp import get_host_ip
+from src.Tcp import get_host_ip
 from src.UI.queele_ui import Ui_Form
 
 

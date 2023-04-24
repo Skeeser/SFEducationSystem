@@ -1,19 +1,19 @@
 import sys
 import time
-import cv2
 from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QApplication
-from PIL import Image
-from src.AllFunc.NewsGet import NewsGet
-from src.Network.net_init import NetworkLogic
-from src.Ocr.hand_reg import HandReg
-from src.Tools.CommonHelper import CommonHelper
+from src.NewsGet import NewsGet
+from src.net_init import NetworkLogic
+from src.hand_reg import HandReg
+from src.CommonHelper import CommonHelper
 from src.UiLogic import UiWidgetLogic
-from src.Chat.chat import Chat
-from src.Chat.voice_reg import VoiceRecognize
-from src.Ocr.ocr_run import VoiceOfOcr
+from src.chat import Chat
+from src.voice_reg import VoiceRecognize
+from src.ocr_run import VoiceOfOcr
 import threading
-from src.Network import StopThreading
+from src import StopThreading
+
+
 # 打包指令 auto-py-to-exe
 
 
@@ -30,7 +30,7 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
         self.frame = None
         self.chat_th = None  # 服务端线程
 
-        styleFile = '../QSS/MacOS.qss'
+        styleFile = 'MacOS.qss'
         qssStyle = CommonHelper.read_qss(styleFile)
         self.setStyleSheet(qssStyle)
 
