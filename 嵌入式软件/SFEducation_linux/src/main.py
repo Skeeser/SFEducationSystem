@@ -12,11 +12,10 @@ from src.voice_reg import VoiceRecognize
 from src.ocr_run import VoiceOfOcr
 import threading
 from src import StopThreading
+from src import Resize
 
 
 # 打包指令 auto-py-to-exe
-
-
 class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -30,7 +29,7 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
         self.frame = None
         self.chat_th = None  # 服务端线程
 
-        styleFile = 'MacOS.qss'
+        styleFile = './src/MacOS.qss'
         qssStyle = CommonHelper.read_qss(styleFile)
         self.setStyleSheet(qssStyle)
 
@@ -193,7 +192,7 @@ class MainWindow(UiWidgetLogic, NetworkLogic, HandReg):
 
         self.action_judge()
         if self.frame is not None:
-            self.show_video_signal_handle(self.frame)
+            self.show_video_signal_handle(Resize.resize(image = self.frame, height = 516))
 
         cTime = time.time()
         fps_text = 1 / (cTime - fpsTime)

@@ -91,11 +91,12 @@ class Ws_Param(object):
 class VoiceRecognize:
     def __init__(self):
         self.wsParam = None
+        self.ws = None
         self.result = ""
         self.keep_time = 5
 
     # 收到websocket消息的处理
-    def on_message(self, ws, message):
+    def on_message(self, message):
         try:
             code = json.loads(message)["code"]
             sid = json.loads(message)["sid"]
@@ -116,15 +117,15 @@ class VoiceRecognize:
             print("receive msg,but parse exception:", e)
 
     # 收到websocket错误的处理
-    def on_error(self, ws, error):
+    def on_error(self, error):
         print("### error:", error)
 
     # 收到websocket关闭的处理
-    def on_close(self, ws,a,b):
+    def on_close(self):
         print("### closed ###")
 
     # 收到websocket连接建立的处理
-    def on_open(self, ws):
+    def on_open(self):
         def run(*args):
             status = STATUS_FIRST_FRAME  # 音频的状态信息，标识音频是第一帧，还是中间帧、最后一帧
             CHUNK = 520  # 定义数据流块
@@ -156,28 +157,28 @@ class VoiceRecognize:
                                   "audio": str(base64.b64encode(buf), 'utf-8'),
                                   "encoding": "raw"}}
                     d = json.dumps(d)
-                    ws.send(d)
+                    self.ws.send(d)
                     status = STATUS_CONTINUE_FRAME
                     # 中间帧处理
                 elif status == STATUS_CONTINUE_FRAME:
                     d = {"data": {"status": 1, "format": "audio/L16;rate=16000",
                                   "audio": str(base64.b64encode(buf), 'utf-8'),
                                   "encoding": "raw"}}
-                    ws.send(json.dumps(d))
+                    self.ws.send(json.dumps(d))
 
                 # 最后一帧处理
                 elif status == STATUS_LAST_FRAME:
                     d = {"data": {"status": 2, "format": "audio/L16;rate=16000",
                                   "audio": str(base64.b64encode(buf), 'utf-8'),
                                   "encoding": "raw"}}
-                    ws.send(json.dumps(d))
+                    self.ws.send(json.dumps(d))
                     time.sleep(1)
                     break
 
             stream.stop_stream()  # 暂停录制
             stream.close()  # 终止流
             p.terminate()  # 终止pyaudio会话
-            ws.close()
+            self.ws.close()
 
         thread.start_new_thread(run, ())
 
@@ -189,12 +190,13 @@ class VoiceRecognize:
                            AudioFile=r'iat_mp3_8k.mp3')
         websocket.enableTrace(False)
         wsUrl = self.wsParam.create_url()
-        ws = websocket.WebSocketApp(wsUrl, on_message=self.on_message, on_error=self.on_error, on_close=self.on_close)
-        ws.on_open = self.on_open
-        ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})
+        self.ws = websocket.WebSocketApp(wsUrl, on_message=self.on_message, on_error=self.on_error, on_close=self.on_close)
+        self.ws.on_open = self.on_open
+        self.ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})
         time2 = datetime.now()
         print(time2 - time1)
         return self.result
+        
 
 
 if __name__ == "__main__":

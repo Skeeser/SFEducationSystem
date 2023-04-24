@@ -5,7 +5,7 @@ from numpy import linalg
 from src.ocr_run import DrawInFrame
 import math
 # 视频设备号
-DEVICE_NUM = 0
+DEVICE_NUM = 11
 
 class HandReg:
     def __init__(self):
@@ -14,6 +14,10 @@ class HandReg:
         self.result = None
         # 接入USB摄像头时，注意修改cap设备的编号
         self.cap = cv.VideoCapture(DEVICE_NUM)
+        self.cap.set(cv.CAP_PROP_FPS, 30)
+        self.cap.set(cv.CAP_PROP_FRAME_WIDTH, 2112)
+        self.cap.set(cv.CAP_PROP_FRAME_HEIGHT, 1188)
+        
         # 加载手部检测函数
         self.mpHands = mp.solutions.hands
         self.hands = self.mpHands.Hands(min_detection_confidence=0.7,
@@ -93,7 +97,8 @@ class HandReg:
                                       handLms,
                                       self.mpHands.HAND_CONNECTIONS,
                                       landmark_drawing_spec=self.handLmsStyle,
-                                      connection_drawing_spec=self.handConStyle)
+                                      connection_drawing_spec=self.handConStyle,
+                                      )
 
                 for j, lm in enumerate(handLms.landmark):
                     xPos = int(lm.x * frame_width)

@@ -80,7 +80,7 @@ void loop()
     Serial.println("[" + now_page + "]");
     if (now_page == "Menu")
     {
-      if (now_page != last_page || Is_Trans_Time())
+      if (now_page != last_page)
       {
         last_page = now_page;
         Page_Paint_Menu(readbuff);
@@ -163,6 +163,13 @@ void loop()
           Page_Paint_Chat(readbuff, temp_user, temp_robot); // temp_ocr
         }
       }
+    }
+  }
+  else
+  {
+    if (now_page == "Menu" && Is_Trans_Time())
+    {
+      Page_Paint_Menu(readbuff);
     }
   }
 

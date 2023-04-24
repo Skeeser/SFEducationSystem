@@ -4,7 +4,7 @@ import aiml
 
 class Chat:
     def __init__(self):
-        _alice_path = self._get_module_dir('aiml') + '\\botdata\\alice'
+        _alice_path = self._get_module_dir('aiml') + '/botdata/alice'
         os.chdir(_alice_path)
         self._alice = aiml.Kernel()
         self._alice.learn("startup.xml")

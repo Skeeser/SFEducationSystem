@@ -31,9 +31,12 @@ class VoiceOfOcr:
 
         # todo 可以设置音量 语调 速度那些
         # 设置音量
-        self.vol = self.pp.getProperty('volume')
+        # self.vol = self.pp.getProperty('volume')
         # self.pp.setProperty('vol', self.vol + 0.5)
-
+        
+        # 音速
+        rate = self.pp.getProperty('rate')
+        self.pp.setProperty('rate', 150)
     def sayaddtext(self, text):
         self.pp.say(text)
 
