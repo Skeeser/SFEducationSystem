@@ -80,7 +80,7 @@ void loop()
     Serial.println("[" + now_page + "]");
     if (now_page == "Menu")
     {
-      if (now_page != last_page)
+      if (now_page != last_page || Is_Trans_Time())
       {
         last_page = now_page;
         Page_Paint_Menu(readbuff);
@@ -167,16 +167,16 @@ void loop()
   }
 
 #endif
-#if IFTIME
-  if (Is_Trans_Time())
-#else
-  if (IfPushTest())
-#endif
-  {
-    Serial.println("\npaint txt.");
-    // Page_Paint_Menu(readbuff);
-    // Page_Paint_DailyNews(readbuff, "ssda");
-  }
+  // #if IFTIME
+  //   if (Is_Trans_Time())
+  // #else
+  //   if (IfPushTest())
+  // #endif
+  //   {
+  //     Serial.println("\npaint txt.");
+  //     // Page_Paint_Menu(readbuff);
+  //     // Page_Paint_DailyNews(readbuff, "ssda");
+  //   }
 
   delete[] readbuff;
 }
