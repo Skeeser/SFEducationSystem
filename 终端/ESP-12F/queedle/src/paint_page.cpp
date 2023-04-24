@@ -193,7 +193,7 @@ void Page_Paint_Chat(unsigned char *BlackImage, String User_data, String Robot_d
     Paint_DrawRectangle(105, 1, 141, 35, BLACK, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
     Paint_DrawRectangle(141, 1, 200, 35, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
     Paint_DrawImage(gImage_single_finger, 106, 1, 68, 68, 2);
-    Paint_DrawString_EN(143, 7, "Start", &Font16, BLACK, WHITE);
+    Paint_DrawString_EN(143, 9, "Start", &Font16, BLACK, WHITE);
     Paint_DrawRectangle(205, 1, 241, 35, BLACK, DOT_PIXEL_1X1, DRAW_FILL_EMPTY);
     Paint_DrawRectangle(241, 1, 300, 35, BLACK, DOT_PIXEL_1X1, DRAW_FILL_FULL);
     Paint_DrawImage(gImage_two_fingers, 206, 1, 68, 68, 2);
@@ -202,9 +202,9 @@ void Page_Paint_Chat(unsigned char *BlackImage, String User_data, String Robot_d
     Paint_DrawLine(1, 180, 300, 180, BLACK, DOT_PIXEL_2X2, LINE_STYLE_DOTTED);
     Paint_DrawLine(1, 398, 300, 398, BLACK, DOT_PIXEL_1X1, LINE_STYLE_DOTTED);
     Paint_DrawLine(1, 400, 300, 400, BLACK, DOT_PIXEL_1X1, LINE_STYLE_DOTTED);
-    Paint_DrawString_EN(1, 39, "User=>", &Font20, WHITE, BLACK);
+    Paint_DrawString_EN(1, 39, "[User:]", &Font20, WHITE, BLACK);
     Paint_DrawString_EN(1, 63, User_data.c_str(), &Font16, WHITE, BLACK);
-    Paint_DrawString_EN(1, 186, "Robot=>", &Font20, WHITE, BLACK);
+    Paint_DrawString_EN(1, 186, "[Robot:]", &Font20, WHITE, BLACK);
     Paint_DrawString_EN(1, 210, Robot_data.c_str(), &Font16, WHITE, BLACK);
 
     Serial.println("Page DailyNews has painted...");
