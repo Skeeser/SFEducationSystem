@@ -1,4 +1,4 @@
-#include Arduino.h>
+#include <Arduino.h>
 #include "pic.h"
 #include "all_config.h"
 #include "delay.h"
@@ -165,13 +165,13 @@ void loop()
       }
     }
   }
-  else
-  {
-    if (now_page == "Menu" && Is_Trans_Time())
-    {
-      Page_Paint_Menu(readbuff);
-    }
-  }
+  // else
+  // {
+  //   if (now_page == "Menu" && Is_Trans_Time())
+  //   {
+  //     Page_Paint_Menu(readbuff);
+  //   }
+  // }
 
 #endif
   // #if IFTIME

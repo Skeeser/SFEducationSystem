@@ -9,7 +9,7 @@ class NewsGet:
         html = urlopen("https://www.globaltimes.cn/world/")
         # 用BeautifulSoup解析html
         obj = bf(html.read(), 'html.parser')
-        # 从标签head、title里提取标题
+        # 从标签p里提取新闻
         self.new_info = obj.find_all('p')
 
     def getNewsStr(self):
