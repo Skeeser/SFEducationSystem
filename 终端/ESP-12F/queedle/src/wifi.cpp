@@ -5,7 +5,7 @@ using namespace std;
 String get_host(String ip)
 {
     String ret = "";
-    String str = "164"; // "132";
+    String str = "132"; //"164" ;
 
     int T = 3;
     for (unsigned int i = 0; i < ip.length(); i++)
@@ -140,7 +140,7 @@ bool myWifi::WifiTcpRead(unsigned char *readbuff)
                 delay(1); // 必须延时一毫秒接收，要不接受不完全
             }
 
-            Serial.print(readbuff[count]);
+            // Serial.print(readbuff[count]);
             //   client.read(readbuff, ALLSCREEN_GRAGHBYTES / 10);
         }
 

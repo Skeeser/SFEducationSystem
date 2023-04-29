@@ -44,8 +44,12 @@
 // wifi开关
 #define IFWIFI 1
 #define IFTCP 1
+#define SFE 0
 #define IFTIME 1
 
 #define LIMIT_TIME 60000 // 1min
+
+typedef unsigned char uint8_t;
+// 全局
 
 #endif
