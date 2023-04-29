@@ -212,12 +212,16 @@ void TcpReadTest(unsigned char *readbuff)
   {
     Serial.println("\nstart display");
     // EpdDisplay((const unsigned char *)readbuff);
-    EPD_init_Full();
+    Serial.println("开始全刷");
+    // EPD_init_Full();
+    EPD_init_Part();
     EPD_Transfer_Full_BW((const unsigned char *)readbuff);
     EPD_DeepSleep();
-
-    EPD_init_Part();
-    // EPD_Transfer_Part(10, 43, 50, 199, (const unsigned char *)readbuff);
+    delay(5000);
+    Serial.println("开始局刷");
+    EPD_init_Full();
+    // EPD_init_Part();
+    EPD_Transfer_Part(10, 43, 50, 199, (const unsigned char *)readbuff);
     EPD_DeepSleep();
   }
   // if (Is_Trans_Time())
