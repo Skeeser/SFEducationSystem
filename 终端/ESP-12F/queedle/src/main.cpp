@@ -9,6 +9,8 @@
 // #include "part.h"
 #include "paint_page.h"
 
+// test
+
 // 定义wifi用户名和密码
 const char *SSID = "OnePlus 8";     // 要连接的WiFi的名称
 const char *PASSWORD = "zgx441427"; // 要连接的WiFi的密码
