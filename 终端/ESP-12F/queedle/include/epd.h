@@ -1,6 +1,5 @@
 #ifndef _EPD_
 #define _EPD_
-
 #include <Arduino.h>
 #include "delay.h"
 #include "spi.h"
@@ -27,7 +26,7 @@ void EPD_WhiteScreen_ALL_Clean(void);
 void EpdClean();
 void EpdDisplay(const unsigned char *buff);
 
-//局刷
+// 局刷
 void EPD_Part_Init(void);
 void EPD_SetRAMValue_BaseMap(const unsigned char *datas);
 void EPD_Dis_Part(unsigned int x_start, unsigned int y_start, const unsigned char *datas, unsigned int PART_COLUMN, unsigned int PART_LINE);
