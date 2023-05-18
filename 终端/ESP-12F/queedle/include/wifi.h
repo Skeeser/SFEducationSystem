@@ -15,17 +15,13 @@ class myWifi
 public:
     myWifi();
     void WifiInit(const char *ssid, const char *password, const char *host, int tcpport);
-    // void WifiHttpSetting();
     void WifiTcpSend(const char *sendbuff);
     bool WifiTcpRead(unsigned char *readbuff);
     String WifiTcpRead();
 
     WiFiClient client; // tcpclient实例
 private:
-    // struct ip_info info;
-    // ESP8266WebServer server(int port = 80); //这里修改端口http
+    String get_host(String ip);
 };
-
-String get_host(String ip);
 
 #endif

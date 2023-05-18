@@ -7,14 +7,6 @@
 
 PAINT Paint;
 
-/******************************************************************************
-function: Create Image
-parameter:
-    image   :   Pointer to the image cache
-    width   :   The width of the picture
-    Height  :   The height of the picture
-    Color   :   Whether the picture is inverted
-******************************************************************************/
 void Paint_NewImage(UBYTE *image, UWORD Width, UWORD Height, UWORD Rotate, UWORD Mirror, UWORD Color)
 {
     Paint.Image = NULL;
@@ -44,21 +36,11 @@ void Paint_NewImage(UBYTE *image, UWORD Width, UWORD Height, UWORD Rotate, UWORD
     }
 }
 
-/******************************************************************************
-function: Select Image
-parameter:
-    image : Pointer to the image cache
-******************************************************************************/
 void Paint_SelectImage(UBYTE *image)
 {
     Paint.Image = image;
 }
 
-/******************************************************************************
-function: Select Image Rotate
-parameter:
-    Rotate : 0,90,180,270
-******************************************************************************/
 void Paint_SetRotate(UWORD Rotate)
 {
     if (Rotate == ROTATE_0 || Rotate == ROTATE_90 || Rotate == ROTATE_180 || Rotate == ROTATE_270)
@@ -72,11 +54,6 @@ void Paint_SetRotate(UWORD Rotate)
     }
 }
 
-/******************************************************************************
-function:	Select Image mirror
-parameter:
-    mirror   :Not mirror,Horizontal mirror,Vertical mirror,Origin mirror
-******************************************************************************/
 void Paint_SetMirroring(UBYTE mirror)
 {
     if (mirror == MIRROR_NONE || mirror == MIRROR_HORIZONTAL ||
@@ -115,13 +92,7 @@ void Paint_SetScale(UBYTE scale)
         Debug("Scale Only support: 2 4 7\r\n");
     }
 }
-/******************************************************************************
-function: Draw Pixels
-parameter:
-    Xpoint : At point X
-    Ypoint : At point Y
-    Color  : Painted colors
-******************************************************************************/
+
 void Paint_SetPixel(UWORD Xpoint, UWORD Ypoint, UWORD Color)
 {
     if (Xpoint > Paint.Width || Ypoint > Paint.Height)
@@ -253,11 +224,6 @@ void Paint_SetPixel(UWORD Xpoint, UWORD Ypoint, UWORD Color)
     }
 }
 
-/******************************************************************************
-function: Clear the color of the picture
-parameter:
-    Color : Painted colors
-******************************************************************************/
 void Paint_Clear(UWORD Color)
 {
     if (Paint.Scale == 2 || Paint.Scale == 4)
@@ -291,15 +257,6 @@ void Paint_Clear(UWORD Color)
     }
 }
 
-/******************************************************************************
-function: Clear the color of a window
-parameter:
-    Xstart : x starting point
-    Ystart : Y starting point
-    Xend   : x end point
-    Yend   : y end point
-    Color  : Painted colors
-******************************************************************************/
 void Paint_ClearWindows(UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend, UWORD Color)
 {
     UWORD X, Y;
@@ -312,15 +269,6 @@ void Paint_ClearWindows(UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend, UWOR
     }
 }
 
-/******************************************************************************
-function: Draw Point(Xpoint, Ypoint) Fill the color
-parameter:
-    Xpoint		: The Xpoint coordinate of the point
-    Ypoint		: The Ypoint coordinate of the point
-    Color		: Painted color
-    Dot_Pixel	: point size
-    Dot_Style	: point Style
-******************************************************************************/
 void Paint_DrawPoint(UWORD Xpoint, UWORD Ypoint, UWORD Color,
                      DOT_PIXEL Dot_Pixel, DOT_STYLE Dot_Style)
 {
@@ -356,17 +304,6 @@ void Paint_DrawPoint(UWORD Xpoint, UWORD Ypoint, UWORD Color,
     }
 }
 
-/******************************************************************************
-function: Draw a line of arbitrary slope
-parameter:
-    Xstart ：Starting Xpoint point coordinates
-    Ystart ：Starting Xpoint point coordinates
-    Xend   ：End point Xpoint coordinate
-    Yend   ：End point Ypoint coordinate
-    Color  ：The color of the line segment
-    Line_width : Line width
-    Line_Style: Solid and dotted lines
-******************************************************************************/
 void Paint_DrawLine(UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend,
                     UWORD Color, DOT_PIXEL Line_width, LINE_STYLE Line_Style)
 {
@@ -421,17 +358,6 @@ void Paint_DrawLine(UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend,
     }
 }
 
-/******************************************************************************
-function: Draw a rectangle
-parameter:
-    Xstart ：Rectangular  Starting Xpoint point coordinates
-    Ystart ：Rectangular  Starting Xpoint point coordinates
-    Xend   ：Rectangular  End point Xpoint coordinate
-    Yend   ：Rectangular  End point Ypoint coordinate
-    Color  ：The color of the Rectangular segment
-    Line_width: Line width
-    Draw_Fill : Whether to fill the inside of the rectangle
-******************************************************************************/
 void Paint_DrawRectangle(UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend,
                          UWORD Color, DOT_PIXEL Line_width, DRAW_FILL Draw_Fill)
 {
@@ -459,17 +385,6 @@ void Paint_DrawRectangle(UWORD Xstart, UWORD Ystart, UWORD Xend, UWORD Yend,
     }
 }
 
-/******************************************************************************
-function: Use the 8-point method to draw a circle of the
-            specified size at the specified position->
-parameter:
-    X_Center  ：Center X coordinate
-    Y_Center  ：Center Y coordinate
-    Radius    ：circle Radius
-    Color     ：The color of the ：circle segment
-    Line_width: Line width
-    Draw_Fill : Whether to fill the inside of the Circle
-******************************************************************************/
 void Paint_DrawCircle(UWORD X_Center, UWORD Y_Center, UWORD Radius,
                       UWORD Color, DOT_PIXEL Line_width, DRAW_FILL Draw_Fill)
 {
@@ -538,16 +453,6 @@ void Paint_DrawCircle(UWORD X_Center, UWORD Y_Center, UWORD Radius,
     }
 }
 
-/******************************************************************************
-function: Show English characters
-parameter:
-    Xpoint           ：X coordinate
-    Ypoint           ：Y coordinate
-    Acsii_Char       ：To display the English characters
-    Font             ：A structure pointer that displays a character size
-    Color_Foreground : Select the foreground color
-    Color_Background : Select the background color
-******************************************************************************/
 void Paint_DrawChar(UWORD Xpoint, UWORD Ypoint, const char Acsii_Char,
                     sFONT *Font, UWORD Color_Foreground, UWORD Color_Background)
 {
@@ -596,16 +501,6 @@ void Paint_DrawChar(UWORD Xpoint, UWORD Ypoint, const char Acsii_Char,
     } // Write all
 }
 
-/******************************************************************************
-function:	Display the string
-parameter:
-    Xstart           ：X coordinate
-    Ystart           ：Y coordinate
-    pString          ：The first address of the English string to be displayed
-    Font             ：A structure pointer that displays a character size
-    Color_Foreground : Select the foreground color
-    Color_Background : Select the background color
-******************************************************************************/
 void Paint_DrawString_EN(UWORD Xstart, UWORD Ystart, const char *pString,
                          sFONT *Font, UWORD Color_Foreground, UWORD Color_Background)
 {
@@ -643,17 +538,6 @@ void Paint_DrawString_EN(UWORD Xstart, UWORD Ystart, const char *pString,
     }
 }
 
-/******************************************************************************
-function: Display the string
-parameter:
-    Xstart  ：X coordinate
-    Ystart  ：Y coordinate
-    pString ：The first address of the Chinese string and English
-              string to be displayed
-    Font    ：A structure pointer that displays a character size
-    Color_Foreground : Select the foreground color
-    Color_Background : Select the background color
-******************************************************************************/
 void Paint_DrawString_CN(UWORD Xstart, UWORD Ystart, const char *pString, cFONT *font,
                          UWORD Color_Foreground, UWORD Color_Background)
 {
@@ -771,16 +655,6 @@ void Paint_DrawString_CN(UWORD Xstart, UWORD Ystart, const char *pString, cFONT 
     }
 }
 
-/******************************************************************************
-function:	Display nummber
-parameter:
-    Xstart           ：X coordinate
-    Ystart           : Y coordinate
-    Nummber          : The number displayed
-    Font             ：A structure pointer that displays a character size
-    Color_Foreground : Select the foreground color
-    Color_Background : Select the background color
-******************************************************************************/
 #define ARRAY_LEN 255
 void Paint_DrawNum(UWORD Xpoint, UWORD Ypoint, int32_t Nummber,
                    sFONT *Font, UWORD Color_Foreground, UWORD Color_Background)
@@ -832,16 +706,6 @@ void Paint_DrawYearTime(UWORD Xstart, UWORD Ystart, PAINT_TIME *pTime, sFONT *Fo
     Paint_DrawChar(Xstart + Dx * 8, Ystart, value[pTime->Day % 10], Font, Color_Background, Color_Foreground);
 }
 
-/******************************************************************************
-function:	Display time
-parameter:
-    Xstart           ：X coordinate
-    Ystart           : Y coordinate
-    pTime            : Time-related structures
-    Font             ：A structure pointer that displays a character size
-    Color_Foreground : Select the foreground color
-    Color_Background : Select the background color
-******************************************************************************/
 void Paint_DrawTime(UWORD Xstart, UWORD Ystart, PAINT_TIME *pTime, sFONT *Font,
                     UWORD Color_Foreground, UWORD Color_Background)
 {
@@ -868,14 +732,6 @@ void Paint_DrawWeekDay(UWORD Xstart, UWORD Ystart, PAINT_TIME *pTime,
     Paint_DrawString_EN(Xstart, Ystart, daysOfTheWeek[pTime->WeekDay], Font, Color_Foreground, Color_Background);
 }
 
-/******************************************************************************
-function:	Display monochrome bitmap
-parameter:
-    image_buffer ：A picture data converted to a bitmap
-info:
-    Use a computer to convert the image into a corresponding array,
-    and then embed the array directly into Imagedata.cpp as a .c file.
-******************************************************************************/
 void Paint_DrawBitMap(const unsigned char *image_buffer)
 {
     UWORD x, y;
@@ -891,15 +747,6 @@ void Paint_DrawBitMap(const unsigned char *image_buffer)
     }
 }
 
-/******************************************************************************
-function:	Display image
-parameter:
-    image            ：Image start address
-    xStart           : X starting coordinates
-    yStart           : Y starting coordinates
-    xEnd             ：Image width
-    yEnd             : Image height
-******************************************************************************/
 void Paint_DrawImage(const unsigned char *image_buffer, UWORD xStart, UWORD yStart, UWORD W_Image, UWORD H_Image, UBYTE Thrink)
 {
     UWORD x, y;

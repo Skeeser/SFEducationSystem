@@ -2,7 +2,7 @@
 
 using namespace std;
 
-String get_host(String ip)
+String myWifi::get_host(String ip)
 {
     String ret = "";
     String str = "132"; //"164" ;
