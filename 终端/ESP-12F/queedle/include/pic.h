@@ -1,4 +1,4 @@
-#if 0
+#if 1
 const unsigned char gImage_BW[15000] PROGMEM = {
     0xff,
     0xff,

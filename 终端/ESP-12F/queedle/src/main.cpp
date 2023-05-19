@@ -8,6 +8,9 @@
 #include "GUI_Paint.h"
 // #include "part.h"
 #include "paint_page.h"
+#include "EPaperDrive.h"
+
+// test
 
 // 定义wifi用户名和密码
 const char *SSID = "OnePlus 8";     // 要连接的WiFi的名称
@@ -25,8 +28,7 @@ bool IfPushTest();
 void TcpReadTest(unsigned char *sendbuff);
 void TcpReadTest(unsigned char *readbuff);
 void PaintTest(unsigned char *BlackImage);
-void EpdPartialTest();
-
+void new_driver();
 void setup()
 {
   pinMode(BUSY_Pin, INPUT);
@@ -45,6 +47,8 @@ void setup()
 #endif
 
   EpdClean();
+
+  // new_driver();
 }
 
 // Tips//
@@ -60,7 +64,7 @@ void loop()
   static int news_flag = 0;
 
   unsigned char *readbuff = new unsigned char[ALLSCREEN_GRAGHBYTES];
-#if IFTCP // wifi功能区
+#if SFE // wifi功能区
   if (!wifi.client.connected())
   {
     wifi.WifiInit(SSID, PASSWORD, HOST, TCPPORT);
@@ -165,31 +169,22 @@ void loop()
       }
     }
   }
-  // else
-  // {
-  //   if (now_page == "Menu" && Is_Trans_Time())
-  //   {
-  //     Page_Paint_Menu(readbuff);
-  //   }
-  // }
+  else
+  {
+    if (now_page == "Menu" && Is_Trans_Time())
+    {
+      Page_Paint_Menu(readbuff);
+    }
+  }
 
 #endif
-  // #if IFTIME
-  //   if (Is_Trans_Time())
-  // #else
-  //   if (IfPushTest())
-  // #endif
-  //   {
-  //     Serial.println("\npaint txt.");
-  //     // Page_Paint_Menu(readbuff);
-  //     // Page_Paint_DailyNews(readbuff, "ssda");
-  //   }
 
+  // TcpReadTest(readbuff);
+  // Serial.print(".");
   delete[] readbuff;
 }
 
 // 按键测试
-
 bool IfPushTest()
 {
 
@@ -218,33 +213,41 @@ void TcpReadTest(unsigned char *readbuff)
   {
     Serial.println("\nstart display");
     // EpdDisplay((const unsigned char *)readbuff);
+    Serial.println("开始全刷");
+    EPD_init_Full();
+    // EPD_init_Part();
+    EPD_Transfer_Full_BW((const unsigned char *)readbuff);
+    EPD_DeepSleep();
+    delay(5000);
+    Serial.println("开始局刷");
+    // EPD_init_Full();
+    EPD_init_Part();
+    EPD_Transfer_Part(10, 43, 50, 199, (const unsigned char *)readbuff);
+    EPD_DeepSleep();
   }
+  // if (Is_Trans_Time())
+  //   EPD_DeepSleep();
 }
 
-// void EpdPartialTest()
-// {
-//   unsigned char fen_L, fen_H, miao_L, miao_H;
-//   //////////////////////Partial refresh time demo/////////////////////////////////////
-//   EPD_HW_Init(); // Electronic paper initialization
-//   // EPD_SetRAMValue_BaseMap(gImage_BW); // Partial refresh background color
-//   for (fen_H = 0; fen_H < 6; fen_H++)
-//   {
-//     for (fen_L = 0; fen_L < 10; fen_L++)
-//     {
-//       for (miao_H = 0; miao_H < 6; miao_H++)
-//       {
-//         for (miao_L = 0; miao_L < 10; miao_L++)
-//         {
-//           EPD_Dis_Part_myself(16, 60, (unsigned char *)pgm_read_byte(&Num[miao_L]),          // x-A,y-A,DATA-A
-//                               16, 92, (unsigned char *)pgm_read_byte(&Num[miao_H]),          // x-B,y-B,DATA-B
-//                               16, 132, (unsigned char *)pgm_read_byte(gImage_numdot),        // x-C,y-C,DATA-C
-//                               16, 174, (unsigned char *)pgm_read_byte(&Num[fen_L]),          // x-D,y-D,DATA-D
-//                               16, 206, (unsigned char *)pgm_read_byte(&Num[fen_H]), 32, 64); // x-E,y-E,DATA-E,Resolution 32*64
+// 新驱动测试
+void new_driver()
+{
+  EPD_init_Full(); // 全刷初始化，使用全刷波形
+  Serial.printf("缓存图像绘制完毕，准备全刷 \n");
+  EPD_Transfer_Full_BW((const unsigned char *)gImage_BW); // 将缓存中的图像传给屏幕控制芯片全刷屏幕
+  EPD_DeepSleep();                                        // 让屏幕进入休眠模式
+  Serial.println("全刷完毕");
 
-//           if ((fen_L == 0) && (miao_H == 0) && (miao_L == 9))
-//             EpdClean();
-//         }
-//       }
-//     }
-//   }
-// }
+  delay(5000);
+  unsigned char *readbuff = new unsigned char[ALLSCREEN_GRAGHBYTES];
+  Paint_NewImage(readbuff, MAX_LINE_BYTES * 8, MAX_COLUMN_BYTES, ROTATE_90, MIRROR_HORIZONTAL, WHITE);
+  Paint_SelectImage(readbuff);
+  Paint_DrawString_EN(0, 0, "waveshare", &Font16, WHITE, BLACK);
+
+  EPD_init_Part(); // 局刷的初始化
+  Serial.printf("开始局刷 \n");
+  EPD_Dis_Part(10, 43, 50, 199, (const unsigned char *)readbuff); // 将缓存中的图像传给屏幕控制芯片局新屏幕
+  Serial.printf("局刷结束 \n");
+  EPD_DeepSleep();
+  delete[] readbuff;
+}

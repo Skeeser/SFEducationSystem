@@ -42,10 +42,14 @@
 #define ALLSCREEN_GRAGHBYTES 15000
 
 // wifi开关
-#define IFWIFI 0
-#define IFTCP 0
-#define IFTIME 0
+#define IFWIFI 1
+#define IFTCP 1
+#define SFE 1
+#define IFTIME 1
 
 #define LIMIT_TIME 60000 // 1min
+
+typedef unsigned char uint8_t;
+// 全局
 
 #endif
