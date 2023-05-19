@@ -46,7 +46,7 @@ void setup()
   wifi.WifiInit(SSID, PASSWORD, HOST, TCPPORT);
 #endif
 
-  // EpdClean();
+  EpdClean();
 
   // new_driver();
 }
@@ -179,7 +179,8 @@ void loop()
 
 #endif
 
-  TcpReadTest(readbuff);
+  // TcpReadTest(readbuff);
+  // Serial.print(".");
   delete[] readbuff;
 }
 
@@ -213,14 +214,14 @@ void TcpReadTest(unsigned char *readbuff)
     Serial.println("\nstart display");
     // EpdDisplay((const unsigned char *)readbuff);
     Serial.println("开始全刷");
-    // EPD_init_Full();
-    EPD_init_Part();
+    EPD_init_Full();
+    // EPD_init_Part();
     EPD_Transfer_Full_BW((const unsigned char *)readbuff);
     EPD_DeepSleep();
     delay(5000);
     Serial.println("开始局刷");
-    EPD_init_Full();
-    // EPD_init_Part();
+    // EPD_init_Full();
+    EPD_init_Part();
     EPD_Transfer_Part(10, 43, 50, 199, (const unsigned char *)readbuff);
     EPD_DeepSleep();
   }

@@ -139,10 +139,11 @@ static void EPD_WriteDispRam(unsigned int XSize, unsigned int YSize, uint8_t *Di
   EPD_W21_CS_1;
 }
 
-static void EPD_Update_Part(void)
+static void EPD_Update_Part_And_Full(void)
 {
   Epaper_Write_Command(0x20);
 }
+
 //////////////////////////////////////////////////////////
 
 void Epaper_Write_Command(unsigned char command)
@@ -267,10 +268,10 @@ void EPD_WhiteScreen_ALL(const unsigned char *BW_datas)
 /////////////////////////////////////////////////////////////////////////////////////////
 void EPD_Update(void)
 {
-  // Epaper_Write_Command(0x22); // Display Update Control
-  // Epaper_Write_Data(0xC7);
+  Epaper_Write_Command(0x22); // Display Update Control
+  Epaper_Write_Data(0xC7);
   Epaper_Write_Command(0x20); // Activate Display Update Sequence
-  // Epaper_READBUSY();
+  Epaper_READBUSY();
 }
 
 void EPD_DeepSleep(void)
@@ -317,7 +318,7 @@ void EPD_Dis_Full(const uint8_t *DisBuffer)
   EPD_SetRamPointer(xStart / 8, yEnd % 256, yEnd / 256);
   EPD_SetRamArea(xStart, xEnd, yEnd % 256, yEnd / 256, yStart % 256, yStart / 256);
   EPD_WriteDispRam(xDot / 8, yDot, (uint8_t *)DisBuffer, 0);
-  EPD_Update();
+  EPD_Update_Part_And_Full();
 
   Epaper_READBUSY();
   Epaper_READBUSY();
@@ -354,7 +355,7 @@ void EPD_Dis_Part(int xStart, int xEnd, int yStart, int yEnd, const uint8_t *Dis
 
   EPD_WriteDispRam(Xsize, Ysize, (uint8_t *)DisBuffer, offset);
 
-  EPD_Update_Part();
+  EPD_Update_Part_And_Full();
   Epaper_READBUSY();
   Epaper_READBUSY();
 
@@ -376,7 +377,7 @@ void EPD_Transfer_Full_BW(const uint8_t *DisBuffer)
   EPD_SetRamArea(xStart, xEnd, yEnd % 256, yEnd / 256, yStart % 256, yStart / 256);
 
   EPD_WriteDispRam(xDot / 8, yDot, (uint8_t *)DisBuffer, 0);
-  EPD_Update();
+  EPD_Update_Part_And_Full();
 }
 
 void EPD_Transfer_Part(int xStart, int xEnd, int yStart, int yEnd, const uint8_t *DisBuffer)
@@ -404,7 +405,7 @@ void EPD_Transfer_Part(int xStart, int xEnd, int yStart, int yEnd, const uint8_t
   EPD_SetRamArea(xStart, xEnd, yEnd % 256, yEnd / 256, yStart % 256, yStart / 256);
   EPD_SetRamPointer(xStart / 8, yEnd % 256, yEnd / 256);
   EPD_WriteDispRam(Xsize, Ysize, (uint8_t *)DisBuffer, offset);
-  EPD_Update_Part();
+  EPD_Update_Part_And_Full();
   Epaper_READBUSY();
 }
 
